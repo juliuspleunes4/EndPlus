@@ -11,8 +11,6 @@ import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
@@ -89,7 +87,7 @@ public abstract class DragonPhaseMixin extends MobEntity implements EnderDragonP
     }
 
     @Inject(method = "damage", at = @At("HEAD"))
-    private void endplus_trackParticipant(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
+    private void endplus_trackParticipant(ServerWorld world, DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         if (source.getAttacker() instanceof ServerPlayerEntity player) {
             endplus_participants.add(player.getUuid());
         }
@@ -97,7 +95,7 @@ public abstract class DragonPhaseMixin extends MobEntity implements EnderDragonP
 
     @ModifyVariable(method = "damage", at = @At("HEAD"), argsOnly = true, ordinal = 0)
     private float endplus_applyShieldReduction(float amount) {
-        if (endplus_shieldActive && !(this.getWorld().isClient())) {
+        if (endplus_shieldActive) {
             return amount * (1.0f - (float) EndPlus.CONFIG.dragon.voidShieldReduction);
         }
         return amount;
@@ -124,7 +122,6 @@ public abstract class DragonPhaseMixin extends MobEntity implements EnderDragonP
     @Unique
     private void endplus_activateShield(ServerWorld world) {
         endplus_shieldActive = true;
-        BlockPos center = new BlockPos(0, 0, 0);
 
         EndCrystalEntity crystal1 = new EndCrystalEntity(world, 20.0, 70.0, 0.0);
         crystal1.setBeamTarget(null);
