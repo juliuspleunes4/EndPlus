@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "betterend:umbral_log",
+    "betterend:umbral_wood",
+    "betterend:stripped_umbral_log",
+    "betterend:stripped_umbral_wood",
+    "betterend:umbral_planks",
+    "betterend:umbral_slab",
+    "betterend:umbral_stairs"
+  ]
+}

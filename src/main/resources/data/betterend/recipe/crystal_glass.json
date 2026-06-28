@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "##",
+    "##"
+  ],
+  "key": {
+    "#": { "item": "betterend:crystal_shard" }
+  },
+  "result": { "id": "betterend:crystal_glass", "count": 4 }
+}

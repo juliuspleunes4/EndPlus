@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "id": "betterend",
+  "version": "${version}",
+  "name": "BetterEnd",
+  "description": "A comprehensive overhaul of the End dimension featuring an enhanced dragon fight, new biomes, structures, mobs, and gear.",
+  "authors": "Julius Pleunes",
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.betterend.BetterEnd"
+    ]
+  },
+  "mixins": [
+    "betterend.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.16.5",
+    "fabric-api": "*",
+    "minecraft": "~1.21.1",
+    "java": ">=21"
+  }
+}
