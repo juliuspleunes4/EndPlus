@@ -39,7 +39,7 @@ public class EndPlusCommand {
         send(source, subtitle());
         send(source, divider());
         send(source, infoRow("Author ", AUTHOR));
-        send(source, infoRow("Version", endplus.MOD_VERSION));
+        send(source, infoRow("Version", EndPlus.MOD_VERSION));
         send(source, githubRow());
         send(source, divider());
         send(source, sectionHeader("Features"));

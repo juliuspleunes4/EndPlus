@@ -47,7 +47,7 @@ public class ModItems {
     public static final Item PARASITE_FLUID = register("parasite_fluid", new Item(new Item.Settings()));
 
     private static Item register(String name, Item item) {
-        return Registry.register(Registries.ITEM, Identifier.of(endplus.MOD_ID, name), item);
+        return Registry.register(Registries.ITEM, Identifier.of(EndPlus.MOD_ID, name), item);
     }
 
     private static Item registerBlockItem(String name, Block block) {

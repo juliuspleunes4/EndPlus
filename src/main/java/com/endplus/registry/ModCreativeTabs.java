@@ -11,9 +11,9 @@ import net.minecraft.util.Identifier;
 
 public class ModCreativeTabs {
 
-    public static final ItemGroup endplus_GROUP = Registry.register(
+    public static final ItemGroup ENDPLUS_GROUP = Registry.register(
             Registries.ITEM_GROUP,
-            Identifier.of(endplus.MOD_ID, "main"),
+            Identifier.of(EndPlus.MOD_ID, "main"),
             FabricItemGroup.builder()
                     .icon(() -> new ItemStack(ModItems.DRAGON_HEART))
                     .displayName(Text.translatable("itemGroup.endplus.main"))

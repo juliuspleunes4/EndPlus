@@ -132,7 +132,7 @@ public class ModBlocks {
                     .requiresTool()));
 
     private static Block register(String name, Block block) {
-        return Registry.register(Registries.BLOCK, Identifier.of(endplus.MOD_ID, name), block);
+        return Registry.register(Registries.BLOCK, Identifier.of(EndPlus.MOD_ID, name), block);
     }
 
     public static void initialize() {}
