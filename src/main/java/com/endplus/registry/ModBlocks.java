@@ -65,7 +65,7 @@ public class ModBlocks {
             new Block(AbstractBlock.Settings.create()
                     .mapColor(net.minecraft.block.MapColor.BLUE)
                     .strength(0.4f)
-                    .sounds(BlockSoundGroup.MOSS)
+                    .sounds(BlockSoundGroup.GRASS)
                     .noCollision()
                     .pistonBehavior(net.minecraft.block.piston.PistonBehavior.DESTROY)));
 
