@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "##",
+    "##"
+  ],
+  "key": {
+    "#": { "item": "betterend:umbral_log" }
+  },
+  "result": { "id": "betterend:umbral_wood", "count": 3 }
+}

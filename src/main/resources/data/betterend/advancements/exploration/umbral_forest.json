@@ -1,0 +1,22 @@
+{
+  "parent": "betterend:root",
+  "display": {
+    "icon": { "id": "betterend:umbral_log" },
+    "title": { "translate": "advancement.betterend.exploration.umbral_forest.title" },
+    "description": { "translate": "advancement.betterend.exploration.umbral_forest.description" },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "enter_biome": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "location": {
+          "biome": "betterend:umbral_forest"
+        }
+      }
+    }
+  }
+}

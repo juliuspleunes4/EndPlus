@@ -21,8 +21,9 @@
 9. [New Enchantments](#9-new-enchantments)
 10. [New End Boss: The Void Leviathan](#10-new-end-boss-the-void-leviathan)
 11. [Lore & Advancements](#11-lore--advancements)
-12. [Config System](#12-config-system)
-13. [Implementation Order](#13-implementation-order)
+12. [Command System](#12-command-system)
+13. [Config System](#13-config-system)
+14. [Implementation Order](#14-implementation-order)
 
 ---
 
@@ -512,22 +513,106 @@ The End was once a thriving civilization of beings called the **Aetherans** — 
 
 ### 11.3 Advancements
 
-| Advancement | Trigger | Reward |
-|-------------|---------|--------|
-| "Into the Dark" | Enter the End for the first time | None (root advancement) |
-| "Dragonslayer" | Kill the Ender Dragon | 20,000 XP (vanilla boost) |
-| "Void Sovereign" | Kill the Void Leviathan | Title + Void Sovereign armor |
-| "Swift Slayer" | Kill dragon in under 10 minutes | Bonus Void Crown drop |
-| "Archivist" | Collect all 8 Lore Tablets | Ender Codex recipe unlock |
-| "Biome Walker" | Visit all 6 new End biomes | Dragon Scale Map item |
-| "Crystal Clear" | Complete the Crystal Sanctum | Sanctum Key (unlocks a bonus room) |
-| "Old Bones" | Kill an Ancient End Golem | Navigation Crystal recipe unlock |
-| "Phase Breaker" | Destroy the Void Shield twice in one dragon fight | Shadow Drake Egg (bonus drop) |
-| "Parasite Problems" | Have 3 Ender Parasites latched on simultaneously | Void Pouch recipe unlock |
+All BetterEnd advancements use `"frame": "challenge"` — this renders them in **purple** in the chat/console when triggered, distinguishing them clearly from vanilla advancements.
+
+Advancements requiring non-standard game state (simultaneous mobs, multi-stage events) use `minecraft:impossible` as their criterion placeholder; they are granted via code using `AdvancementProgress` when the relevant game logic fires.
+
+#### Dragon
+
+| ID | Title | Trigger | Vanilla Criterion |
+|----|-------|---------|-------------------|
+| `dragon/dragonslayer` | Dragonslayer | Kill the Ender Dragon | `player_killed_entity` |
+| `dragon/swift_slayer` | Swift Slayer | Kill dragon in under 10 min | Code-granted (`impossible`) |
+| `dragon/phase_breaker` | Phase Breaker | Break Void Shield twice in one fight | Code-granted (`impossible`) |
+| `dragon/void_sovereign` | Void Sovereign | Kill the Void Leviathan | `player_killed_entity` |
+
+#### Mob Kills
+
+| ID | Title | Trigger | Vanilla Criterion |
+|----|-------|---------|-------------------|
+| `mobs/void_stalker_slayer` | Gone in a Blink | Kill a Void Stalker | `player_killed_entity` |
+| `mobs/prism_crawler_slayer` | Crystal Breaker | Kill a Prism Crawler | `player_killed_entity` |
+| `mobs/shade_lurker_slayer` | Into the Light | Kill a Shade Lurker | `player_killed_entity` |
+| `mobs/cliff_wraith_slayer` | Grounded | Kill a Cliff Wraith | `player_killed_entity` |
+| `mobs/ancient_golem_slayer` | Old Bones | Kill an Ancient End Golem | `player_killed_entity` |
+| `mobs/parasite_survivor` | Parasite Problems | Have 3 Ender Parasites latch on simultaneously | Code-granted (`impossible`) |
+| `mobs/bestiary_complete` | Void Bestiary | Kill at least one of every new mob | Code-granted (`impossible`) |
+
+#### Exploration
+
+| ID | Title | Trigger | Vanilla Criterion |
+|----|-------|---------|-------------------|
+| `exploration/void_wastes` | Barren Horizons | Enter the Void Wastes biome | `location` |
+| `exploration/crystalline_fields` | Crystal Garden | Enter the Crystalline Fields biome | `location` |
+| `exploration/umbral_forest` | Under the Canopy | Enter the Umbral Forest biome | `location` |
+| `exploration/skyreach_peaks` | Summit Seeker | Enter the Skyreach Peaks biome | `location` |
+| `exploration/sunken_citadel` | Lost Civilization | Enter the Sunken Citadel Region | `location` |
+| `exploration/biome_walker` | Void Walker | Visit all 6 new End biomes | All five above (AND-required) |
+
+#### Items & Crafting
+
+| ID | Title | Trigger | Vanilla Criterion |
+|----|-------|---------|-------------------|
+| `items/dragon_heart_obtained` | Heart of the Beast | Obtain a Dragon Heart | `inventory_changed` |
+| `items/first_scales` | Scaled Up | Obtain Void Scales | `inventory_changed` |
+| `items/endrite_miner` | Endrite Prospector | Mine Endrite Ore | `inventory_changed` |
+| `items/void_miner` | Void Dust Collector | Mine Void Ore | `inventory_changed` |
+
+#### Lore
+
+| ID | Title | Trigger | Vanilla Criterion |
+|----|-------|---------|-------------------|
+| `lore/archivist` | Archivist | Collect all 8 Lore Tablets | Code-granted (`impossible`) |
 
 ---
 
-## 12. Config System
+## 12. Command System
+
+### `/betterend help`
+Outputs a formatted info panel to the executing player's chat. No permission level required.
+
+**Output design:**
+```
+▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
+          ✦  BetterEnd  ✦
+    An End Dimension Overhaul Mod
+▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
+ Author   Julius Pleunes
+ Version  1.0.0
+ GitHub   https://github.com/juliuspleunes4/BetterEnd
+▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
+ Features
+  ✦ Enhanced Dragon Fight  (500 HP, 4 phases, minions)
+  ✦ 5 Dragon Minions
+  ✦ 6 New End Biomes
+  ✦ 6 New Structures incl. The Citadel
+  ✦ 6 New Mobs
+  ✦ New Weapons, Armor & Materials
+  ✦ The Void Leviathan  (Final Boss — 800 HP)
+▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
+ Commands
+  /betterend help    Show this menu
+  /betterend config  View active config values  [OP]
+▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
+```
+
+**Color scheme:**
+- Dividers `▬▬▬`: `DARK_PURPLE`
+- Title `BetterEnd`: `LIGHT_PURPLE` + Bold
+- `✦` bullets: `LIGHT_PURPLE`
+- Labels (Author, Version, GitHub, section headers): `GOLD` + Bold
+- Values (names, version number): `WHITE`
+- GitHub URL: `AQUA` + Underlined + clickable `OPEN_URL`
+- Feature text: `GRAY`
+- Command names: `YELLOW`
+- Command descriptions: `DARK_GRAY`
+
+### `/betterend config`
+Requires permission level 2 (operator). Dumps current config values in color-coded key=value pairs grouped by category.
+
+---
+
+## 13. Config System
 
 Located at `config/betterend.json` (server-side config, loaded on startup):
 
@@ -577,7 +662,7 @@ Located at `config/betterend.json` (server-side config, loaded on startup):
 
 ---
 
-## 13. Implementation Order
+## 14. Implementation Order
 
 ### Phase A — Foundation (Week 1–2)
 1. Gradle project setup (Fabric 1.21.1, Java 21)

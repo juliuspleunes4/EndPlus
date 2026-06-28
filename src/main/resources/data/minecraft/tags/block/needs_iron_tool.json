@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "betterend:void_ore",
+    "betterend:void_stone",
+    "betterend:void_stone_bricks"
+  ]
+}

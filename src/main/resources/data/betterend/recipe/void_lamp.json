@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " C ",
+    "DVD",
+    " S "
+  ],
+  "key": {
+    "C": { "item": "betterend:crystal_shard" },
+    "D": { "item": "betterend:void_dust" },
+    "V": { "item": "minecraft:end_stone" },
+    "S": { "item": "betterend:crystal_shard" }
+  },
+  "result": { "id": "betterend:void_lamp", "count": 2 }
+}

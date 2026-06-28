@@ -1,0 +1,22 @@
+{
+  "parent": "betterend:root",
+  "display": {
+    "icon": { "id": "betterend:cracked_end_stone" },
+    "title": { "translate": "advancement.betterend.exploration.void_wastes.title" },
+    "description": { "translate": "advancement.betterend.exploration.void_wastes.description" },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "enter_biome": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "location": {
+          "biome": "betterend:void_wastes"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "axis=x": { "model": "betterend:block/umbral_wood", "x": 90, "y": 90 },
+    "axis=y": { "model": "betterend:block/umbral_wood" },
+    "axis=z": { "model": "betterend:block/umbral_wood", "x": 90 }
+  }
+}

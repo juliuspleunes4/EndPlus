@@ -1,0 +1,15 @@
+{
+  "replace": false,
+  "values": [
+    "betterend:cracked_end_stone",
+    "betterend:void_touched_purpur",
+    "betterend:endrite_ore",
+    "betterend:void_ore",
+    "betterend:endrite_block",
+    "betterend:void_stone",
+    "betterend:void_stone_bricks",
+    "betterend:crystal_glass",
+    "betterend:void_lamp",
+    "betterend:void_rune_block"
+  ]
+}
