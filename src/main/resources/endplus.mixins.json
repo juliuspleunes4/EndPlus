@@ -3,9 +3,15 @@
   "minVersion": "0.8",
   "package": "com.endplus.mixin",
   "compatibilityLevel": "JAVA_21",
-  "mixins": [],
+  "mixins": [
+    "entity.dragon.DragonHealthMixin",
+    "entity.dragon.DragonPhaseMixin",
+    "entity.AreaEffectCloudBreathMixin"
+  ],
   "client": [],
-  "server": [],
+  "server": [
+    "entity.dragon.DragonFightMixin"
+  ],
   "injectors": {
     "defaultRequire": 1
   }
