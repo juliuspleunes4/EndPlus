@@ -4,6 +4,8 @@ import com.endplus.command.EndPlusCommand;
 import com.endplus.config.EndPlusConfig;
 import com.endplus.registry.ModBlocks;
 import com.endplus.registry.ModCreativeTabs;
+import com.endplus.registry.ModEffects;
+import com.endplus.registry.ModEntities;
 import com.endplus.registry.ModItems;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
@@ -27,6 +29,8 @@ public class EndPlus implements ModInitializer {
     public void onInitialize() {
         CONFIG = EndPlusConfig.load(FabricLoader.getInstance().getConfigDir());
 
+        ModEffects.initialize();
+        ModEntities.initialize();
         ModBlocks.initialize();
         ModItems.initialize();
         ModCreativeTabs.initialize();
