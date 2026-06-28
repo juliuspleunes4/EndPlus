@@ -1,0 +1,22 @@
+{
+  "parent": "betterend:root",
+  "display": {
+    "icon": { "id": "betterend:crystal_spire" },
+    "title": { "translate": "advancement.betterend.exploration.crystalline_fields.title" },
+    "description": { "translate": "advancement.betterend.exploration.crystalline_fields.description" },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "enter_biome": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "location": {
+          "biome": "betterend:crystalline_fields"
+        }
+      }
+    }
+  }
+}

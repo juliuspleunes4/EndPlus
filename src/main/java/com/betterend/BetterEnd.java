@@ -1,5 +1,6 @@
 package com.betterend;
 
+import com.betterend.command.BetterEndCommand;
 import com.betterend.config.BetterEndConfig;
 import com.betterend.registry.ModBlocks;
 import com.betterend.registry.ModCreativeTabs;
@@ -17,6 +18,10 @@ public class BetterEnd implements ModInitializer {
     public static final String MOD_ID = "betterend";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
     public static BetterEndConfig CONFIG;
+    public static final String MOD_VERSION = FabricLoader.getInstance()
+            .getModContainer(MOD_ID)
+            .map(c -> c.getMetadata().getVersion().getFriendlyString())
+            .orElse("unknown");
 
     @Override
     public void onInitialize() {
@@ -25,6 +30,7 @@ public class BetterEnd implements ModInitializer {
         ModBlocks.initialize();
         ModItems.initialize();
         ModCreativeTabs.initialize();
+        BetterEndCommand.register();
 
         StrippableBlockRegistry.register(ModBlocks.UMBRAL_LOG, ModBlocks.STRIPPED_UMBRAL_LOG);
         StrippableBlockRegistry.register(ModBlocks.UMBRAL_WOOD, ModBlocks.STRIPPED_UMBRAL_WOOD);

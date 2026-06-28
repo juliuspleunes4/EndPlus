@@ -1,0 +1,17 @@
+{
+  "parent": "betterend:dragon/dragonslayer",
+  "display": {
+    "icon": { "id": "minecraft:end_crystal" },
+    "title": { "translate": "advancement.betterend.dragon.phase_breaker.title" },
+    "description": { "translate": "advancement.betterend.dragon.phase_breaker.description" },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "criteria": {
+    "trigger": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}
