@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "##",
+    "##"
+  ],
+  "key": {
+    "#": { "item": "endplus:void_stone" }
+  },
+  "result": { "id": "endplus:void_stone_bricks", "count": 4 }
+}

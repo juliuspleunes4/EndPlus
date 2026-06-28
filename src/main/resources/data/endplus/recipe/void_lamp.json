@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " C ",
+    "DVD",
+    " S "
+  ],
+  "key": {
+    "C": { "item": "endplus:crystal_shard" },
+    "D": { "item": "endplus:void_dust" },
+    "V": { "item": "minecraft:end_stone" },
+    "S": { "item": "endplus:crystal_shard" }
+  },
+  "result": { "id": "endplus:void_lamp", "count": 2 }
+}

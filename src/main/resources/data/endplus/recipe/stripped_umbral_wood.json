@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "##",
+    "##"
+  ],
+  "key": {
+    "#": { "item": "endplus:stripped_umbral_log" }
+  },
+  "result": { "id": "endplus:stripped_umbral_wood", "count": 3 }
+}

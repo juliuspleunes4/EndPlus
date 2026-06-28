@@ -1,7 +1,0 @@
-{
-  "variants": {
-    "type=bottom": { "model": "betterend:block/umbral_slab" },
-    "type=double": { "model": "betterend:block/umbral_planks" },
-    "type=top": { "model": "betterend:block/umbral_slab_top" }
-  }
-}

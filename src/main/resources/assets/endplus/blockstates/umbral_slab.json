@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "type=bottom": { "model": "endplus:block/umbral_slab" },
+    "type=double": { "model": "endplus:block/umbral_planks" },
+    "type=top": { "model": "endplus:block/umbral_slab_top" }
+  }
+}

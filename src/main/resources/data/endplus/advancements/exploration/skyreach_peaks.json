@@ -1,0 +1,22 @@
+{
+  "parent": "endplus:root",
+  "display": {
+    "icon": { "id": "endplus:endrite_ore" },
+    "title": { "translate": "advancement.endplus.exploration.skyreach_peaks.title" },
+    "description": { "translate": "advancement.endplus.exploration.skyreach_peaks.description" },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "enter_biome": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "location": {
+          "biome": "endplus:skyreach_peaks"
+        }
+      }
+    }
+  }
+}

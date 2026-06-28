@@ -1,0 +1,22 @@
+{
+  "parent": "endplus:root",
+  "display": {
+    "icon": { "id": "endplus:umbral_log" },
+    "title": { "translate": "advancement.endplus.exploration.umbral_forest.title" },
+    "description": { "translate": "advancement.endplus.exploration.umbral_forest.description" },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "enter_biome": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "location": {
+          "biome": "endplus:umbral_forest"
+        }
+      }
+    }
+  }
+}

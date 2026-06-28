@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/outer_stairs",
-  "textures": {
-    "bottom": "betterend:block/umbral_planks",
-    "top": "betterend:block/umbral_planks",
-    "side": "betterend:block/umbral_planks"
-  }
-}

@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    { "item": "endplus:umbral_log" }
+  ],
+  "result": { "id": "endplus:umbral_planks", "count": 4 }
+}

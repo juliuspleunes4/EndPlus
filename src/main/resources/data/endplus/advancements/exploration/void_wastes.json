@@ -1,0 +1,22 @@
+{
+  "parent": "endplus:root",
+  "display": {
+    "icon": { "id": "endplus:cracked_end_stone" },
+    "title": { "translate": "advancement.endplus.exploration.void_wastes.title" },
+    "description": { "translate": "advancement.endplus.exploration.void_wastes.description" },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "enter_biome": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "location": {
+          "biome": "endplus:void_wastes"
+        }
+      }
+    }
+  }
+}

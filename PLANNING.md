@@ -1,10 +1,10 @@
-# BetterEnd Mod — Planning Document
+# End+ Mod — Planning Document
 
 **Target:** Minecraft Java Edition 1.21.1  
 **Java Version:** Java 21  
 **Mod Loader:** Fabric (preferred for server-side compatibility)  
 **Side:** Primarily server-side; some features require client-side rendering (particles, sounds)  
-**Mod ID:** `betterend`
+**Mod ID:** `endplus`
 
 ---
 
@@ -30,10 +30,10 @@
 ## 1. Project Structure
 
 ```
-betterend/
-├── src/main/java/com/betterend/
-│   ├── BetterEnd.java                  # Mod initializer
-│   ├── BetterEndServer.java            # Server-side initializer
+EndPlus/
+├── src/main/java/com/endplus/
+│   ├── EndPlus.java                  # Mod initializer
+│   ├── EndPlusServer.java            # Server-side initializer
 │   ├── entity/
 │   │   ├── dragon/                     # Dragon AI patches
 │   │   ├── minion/                     # All minion entities
@@ -49,13 +49,13 @@ betterend/
 │   └── config/                         # Config handling
 ├── src/main/resources/
 │   ├── fabric.mod.json
-│   ├── betterend.mixins.json
-│   ├── data/betterend/
+│   ├── endplus.mixins.json
+│   ├── data/endplus/
 │   │   ├── loot_tables/
 │   │   ├── recipes/
 │   │   ├── advancements/
 │   │   └── worldgen/
-│   └── assets/betterend/
+│   └── assets/endplus/
 │       ├── textures/
 │       ├── models/
 │       └── lang/
@@ -513,7 +513,7 @@ The End was once a thriving civilization of beings called the **Aetherans** — 
 
 ### 11.3 Advancements
 
-All BetterEnd advancements use `"frame": "challenge"` — this renders them in **purple** in the chat/console when triggered, distinguishing them clearly from vanilla advancements.
+All End+ advancements use `"frame": "challenge"` — this renders them in **purple** in the chat/console when triggered, distinguishing them clearly from vanilla advancements.
 
 Advancements requiring non-standard game state (simultaneous mobs, multi-stage events) use `minecraft:impossible` as their criterion placeholder; they are granted via code using `AdvancementProgress` when the relevant game logic fires.
 
@@ -568,18 +568,18 @@ Advancements requiring non-standard game state (simultaneous mobs, multi-stage e
 
 ## 12. Command System
 
-### `/betterend help`
+### `/endplus help`
 Outputs a formatted info panel to the executing player's chat. No permission level required.
 
 **Output design:**
 ```
 ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
-          ✦  BetterEnd  ✦
+          ✦  End+  ✦
     An End Dimension Overhaul Mod
 ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
  Author   Julius Pleunes
  Version  1.0.0
- GitHub   https://github.com/juliuspleunes4/BetterEnd
+ GitHub   https://github.com/juliuspleunes4/EndPlus
 ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
  Features
   ✦ Enhanced Dragon Fight  (500 HP, 4 phases, minions)
@@ -591,14 +591,14 @@ Outputs a formatted info panel to the executing player's chat. No permission lev
   ✦ The Void Leviathan  (Final Boss — 800 HP)
 ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
  Commands
-  /betterend help    Show this menu
-  /betterend config  View active config values  [OP]
+  /endplus help    Show this menu
+  /endplus config  View active config values  [OP]
 ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
 ```
 
 **Color scheme:**
 - Dividers `▬▬▬`: `DARK_PURPLE`
-- Title `BetterEnd`: `LIGHT_PURPLE` + Bold
+- Title `End+`: `LIGHT_PURPLE` + Bold
 - `✦` bullets: `LIGHT_PURPLE`
 - Labels (Author, Version, GitHub, section headers): `GOLD` + Bold
 - Values (names, version number): `WHITE`
@@ -607,14 +607,14 @@ Outputs a formatted info panel to the executing player's chat. No permission lev
 - Command names: `YELLOW`
 - Command descriptions: `DARK_GRAY`
 
-### `/betterend config`
+### `/endplus config`
 Requires permission level 2 (operator). Dumps current config values in color-coded key=value pairs grouped by category.
 
 ---
 
 ## 13. Config System
 
-Located at `config/betterend.json` (server-side config, loaded on startup):
+Located at `config/endplus.json` (server-side config, loaded on startup):
 
 ```json
 {
@@ -743,4 +743,4 @@ Located at `config/betterend.json` (server-side config, loaded on startup):
 
 ---
 
-*This document is the authoritative design spec for BetterEnd. All implementation decisions should reference back to this plan. Deviations should be noted in commit messages.*
+*This document is the authoritative design spec for End+. All implementation decisions should reference back to this plan. Deviations should be noted in commit messages.*

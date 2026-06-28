@@ -1,0 +1,17 @@
+{
+  "parent": "endplus:root",
+  "display": {
+    "icon": { "id": "minecraft:book" },
+    "title": { "translate": "advancement.endplus.lore.archivist.title" },
+    "description": { "translate": "advancement.endplus.lore.archivist.description" },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": true
+  },
+  "criteria": {
+    "trigger": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

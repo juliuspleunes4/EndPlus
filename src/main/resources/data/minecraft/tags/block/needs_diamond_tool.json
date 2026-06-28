@@ -1,7 +1,7 @@
 {
   "replace": false,
   "values": [
-    "betterend:endrite_ore",
-    "betterend:endrite_block"
+    "endplus:endrite_ore",
+    "endplus:endrite_block"
   ]
 }

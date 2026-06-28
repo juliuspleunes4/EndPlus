@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column_horizontal",
+  "textures": {
+    "end": "endplus:block/umbral_log_top",
+    "side": "endplus:block/umbral_log_side"
+  }
+}

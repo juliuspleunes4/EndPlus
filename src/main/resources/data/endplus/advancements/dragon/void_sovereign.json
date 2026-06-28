@@ -1,0 +1,22 @@
+{
+  "parent": "endplus:dragon/dragonslayer",
+  "display": {
+    "icon": { "id": "endplus:dragon_heart" },
+    "title": { "translate": "advancement.endplus.dragon.void_sovereign.title" },
+    "description": { "translate": "advancement.endplus.dragon.void_sovereign.description" },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "kill_leviathan": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "endplus:void_leviathan"
+        }
+      }
+    }
+  }
+}

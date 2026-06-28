@@ -1,4 +1,0 @@
-{
-  "parent": "minecraft:block/leaves",
-  "textures": { "all": "betterend:block/umbral_leaves" }
-}

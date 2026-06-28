@@ -1,12 +1,12 @@
 {
   "replace": false,
   "values": [
-    "betterend:umbral_log",
-    "betterend:umbral_wood",
-    "betterend:stripped_umbral_log",
-    "betterend:stripped_umbral_wood",
-    "betterend:umbral_planks",
-    "betterend:umbral_slab",
-    "betterend:umbral_stairs"
+    "endplus:umbral_log",
+    "endplus:umbral_wood",
+    "endplus:stripped_umbral_log",
+    "endplus:stripped_umbral_wood",
+    "endplus:umbral_planks",
+    "endplus:umbral_slab",
+    "endplus:umbral_stairs"
   ]
 }

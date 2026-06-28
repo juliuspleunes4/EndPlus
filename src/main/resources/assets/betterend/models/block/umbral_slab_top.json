@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/slab_top",
-  "textures": {
-    "bottom": "betterend:block/umbral_planks",
-    "top": "betterend:block/umbral_planks",
-    "side": "betterend:block/umbral_planks"
-  }
-}

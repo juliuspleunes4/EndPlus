@@ -1,0 +1,22 @@
+{
+  "parent": "endplus:root",
+  "display": {
+    "icon": { "id": "endplus:void_dust" },
+    "title": { "translate": "advancement.endplus.items.void_miner.title" },
+    "description": { "translate": "advancement.endplus.items.void_miner.description" },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "has_void_dust": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          { "items": ["endplus:void_dust"] }
+        ]
+      }
+    }
+  }
+}

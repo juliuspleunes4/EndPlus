@@ -1,19 +1,19 @@
 {
   "schemaVersion": 1,
-  "id": "betterend",
+  "id": "endplus",
   "version": "${version}",
-  "name": "BetterEnd",
+  "name": "End+",
   "description": "A comprehensive overhaul of the End dimension featuring an enhanced dragon fight, new biomes, structures, mobs, and gear.",
   "authors": "Julius Pleunes",
   "license": "MIT",
   "environment": "*",
   "entrypoints": {
     "main": [
-      "com.betterend.BetterEnd"
+      "com.endplus.EndPlus"
     ]
   },
   "mixins": [
-    "betterend.mixins.json"
+    "endplus.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=0.16.5",
