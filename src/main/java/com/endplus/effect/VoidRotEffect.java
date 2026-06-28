@@ -3,7 +3,6 @@ package com.endplus.effect;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
-import net.minecraft.server.world.ServerWorld;
 
 public class VoidRotEffect extends StatusEffect {
 
@@ -18,7 +17,8 @@ public class VoidRotEffect extends StatusEffect {
     }
 
     @Override
-    public void applyUpdateEffect(ServerWorld world, LivingEntity entity, int amplifier) {
-        entity.damage(world, entity.getDamageSources().magic(), 1.0f + amplifier);
+    public boolean applyUpdateEffect(LivingEntity entity, int amplifier) {
+        entity.damage(entity.getDamageSources().magic(), 1.0f + amplifier);
+        return true;
     }
 }

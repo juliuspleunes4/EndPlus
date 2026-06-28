@@ -8,6 +8,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.decoration.EndCrystalEntity;
 import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
@@ -87,7 +88,7 @@ public abstract class DragonPhaseMixin extends MobEntity implements EnderDragonP
     }
 
     @Inject(method = "damage", at = @At("HEAD"))
-    private void endplus_trackParticipant(ServerWorld world, DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
+    private void endplus_trackParticipant(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         if (source.getAttacker() instanceof ServerPlayerEntity player) {
             endplus_participants.add(player.getUuid());
         }
@@ -156,7 +157,7 @@ public abstract class DragonPhaseMixin extends MobEntity implements EnderDragonP
 
     @Unique
     private void endplus_fireVoidBeam(ServerWorld world) {
-        ServerPlayerEntity target = world.getClosestPlayer(this, 100.0);
+        PlayerEntity target = world.getClosestPlayer(this, 100.0);
         if (target == null) return;
 
         Vec3d origin = new Vec3d(this.getX(), this.getBodyY(0.5), this.getZ());

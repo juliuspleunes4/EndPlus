@@ -9,7 +9,6 @@ import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.boss.dragon.EnderDragonFight;
 import net.minecraft.item.ItemStack;
-import net.minecraft.server.network.ServerAdvancementTracker;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
@@ -55,9 +54,9 @@ public class DragonFightMixin {
         AdvancementEntry advancement = serverWorld.getServer().getAdvancementLoader()
                 .get(Identifier.of(EndPlus.MOD_ID, path));
         if (advancement == null) return;
-        ServerAdvancementTracker tracker = player.getAdvancementTracker();
-        AdvancementProgress progress = tracker.getProgress(advancement);
-        for (String criterion : progress.getUnobtainedRequirements()) {
+        var tracker = player.getAdvancementTracker();
+        var progress = tracker.getProgress(advancement);
+        for (String criterion : progress.getUnobtainedCriteria()) {
             tracker.grantCriterion(advancement, criterion);
         }
     }
