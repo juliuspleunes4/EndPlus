@@ -37,6 +37,18 @@
   "item.endplus.camouflage_membrane": "Camouflage Membrane",
   "item.endplus.parasite_fluid": "Parasite Fluid",
 
+  "entity.endplus.void_imp": "Void Imp",
+  "entity.endplus.ender_phantom": "Ender Phantom",
+  "entity.endplus.endrite_golem": "Endrite Golem",
+  "entity.endplus.void_witch": "Void Witch",
+  "entity.endplus.shadow_drake": "Shadow Drake",
+
+  "item.endplus.void_imp_spawn_egg": "Void Imp Spawn Egg",
+  "item.endplus.ender_phantom_spawn_egg": "Ender Phantom Spawn Egg",
+  "item.endplus.endrite_golem_spawn_egg": "Endrite Golem Spawn Egg",
+  "item.endplus.void_witch_spawn_egg": "Void Witch Spawn Egg",
+  "item.endplus.shadow_drake_spawn_egg": "Shadow Drake Spawn Egg",
+
   "effect.endplus.void_rot": "Void Rot",
 
   "advancement.endplus.root.title": "Into the Dark",
