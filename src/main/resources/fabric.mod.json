@@ -10,6 +10,9 @@
   "entrypoints": {
     "main": [
       "com.endplus.EndPlus"
+    ],
+    "client": [
+      "com.endplus.EndPlusClient"
     ]
   },
   "mixins": [
