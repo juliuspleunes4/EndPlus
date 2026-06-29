@@ -30,26 +30,41 @@ public class EndriteGolemModel<T extends EndriteGolemEntity> extends SinglePartE
 
     public static TexturedModelData getTexturedModelData() {
         ModelData data = new ModelData();
-        ModelPartData root = data.getRoot();
-        root.addChild("head",
-                ModelPartBuilder.create().uv(0, 0).cuboid(-4, -8, -4, 8, 8, 8),
-                ModelTransform.pivot(0, 0, 0));
-        root.addChild("body",
-                ModelPartBuilder.create().uv(16, 16).cuboid(-4, 0, -2, 8, 12, 4),
-                ModelTransform.pivot(0, 0, 0));
-        root.addChild("right_arm",
-                ModelPartBuilder.create().uv(40, 16).cuboid(-3, -2, -2, 4, 12, 4),
-                ModelTransform.pivot(-5, 2, 0));
-        root.addChild("left_arm",
-                ModelPartBuilder.create().uv(32, 48).cuboid(-1, -2, -2, 4, 12, 4),
-                ModelTransform.pivot(5, 2, 0));
-        root.addChild("right_leg",
-                ModelPartBuilder.create().uv(0, 16).cuboid(-2, 0, -2, 4, 12, 4),
-                ModelTransform.pivot(-2, 12, 0));
-        root.addChild("left_leg",
-                ModelPartBuilder.create().uv(16, 48).cuboid(-2, 0, -2, 4, 12, 4),
-                ModelTransform.pivot(2, 12, 0));
-        return TexturedModelData.of(data, 64, 64);
+        ModelPartData partData = data.getRoot();
+
+        partData.addChild("head",
+                ModelPartBuilder.create()
+                        .uv(0, 0).cuboid(-4.0f, -12.0f, -5.5f, 8, 10, 8)
+                        .uv(24, 0).cuboid(-1.0f, -5.0f, -7.5f, 2, 4, 2),
+                ModelTransform.pivot(0, -7.0f, -2.0f));
+
+        ModelPartData body = partData.addChild("body",
+                ModelPartBuilder.create()
+                        .uv(0, 40).cuboid(-9.0f, -2.0f, -6.0f, 18, 12, 11)
+                        .uv(0, 70).cuboid(-4.5f, 10.0f, -3.0f, 9, 5, 6, new Dilation(0.5f)),
+                ModelTransform.pivot(0, -7.0f, 0));
+
+        partData.addChild("right_arm",
+                ModelPartBuilder.create()
+                        .uv(60, 21).cuboid(-13.0f, -2.5f, -3.0f, 4, 30, 6),
+                ModelTransform.pivot(0, -7.0f, 0));
+
+        partData.addChild("left_arm",
+                ModelPartBuilder.create()
+                        .uv(60, 58).cuboid(9.0f, -2.5f, -3.0f, 4, 30, 6),
+                ModelTransform.pivot(0, -7.0f, 0));
+
+        partData.addChild("right_leg",
+                ModelPartBuilder.create()
+                        .uv(37, 0).cuboid(-3.5f, -3.0f, -3.0f, 6, 16, 5),
+                ModelTransform.pivot(-4.0f, 11.0f, 0));
+
+        partData.addChild("left_leg",
+                ModelPartBuilder.create()
+                        .uv(60, 0).mirrored().cuboid(-3.5f, -3.0f, -3.0f, 6, 16, 5),
+                ModelTransform.pivot(5.0f, 11.0f, 0));
+
+        return TexturedModelData.of(data, 128, 128);
     }
 
     @Override
@@ -62,8 +77,8 @@ public class EndriteGolemModel<T extends EndriteGolemEntity> extends SinglePartE
                           float headYaw, float headPitch) {
         head.yaw = headYaw * ((float) Math.PI / 180F);
         head.pitch = headPitch * ((float) Math.PI / 180F);
-        rightArm.pitch = MathHelper.cos(limbAngle * 0.6662F + (float) Math.PI) * 2F * limbDistance * 0.5F;
-        leftArm.pitch = MathHelper.cos(limbAngle * 0.6662F) * 2F * limbDistance * 0.5F;
+        rightArm.pitch = MathHelper.cos(limbAngle * 0.6662F + (float) Math.PI) * 1.5F * limbDistance;
+        leftArm.pitch = MathHelper.cos(limbAngle * 0.6662F) * 1.5F * limbDistance;
         rightLeg.pitch = MathHelper.cos(limbAngle * 0.6662F) * 1.4F * limbDistance;
         leftLeg.pitch = MathHelper.cos(limbAngle * 0.6662F + (float) Math.PI) * 1.4F * limbDistance;
     }

@@ -7,14 +7,13 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.entity.mob.FlyingEntity;
 import net.minecraft.entity.mob.HostileEntity;
-import net.minecraft.entity.navigation.BirdNavigation;
-import net.minecraft.entity.navigation.EntityNavigation;
+import net.minecraft.entity.ai.pathing.BirdNavigation;
+import net.minecraft.entity.ai.pathing.EntityNavigation;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.World;
 
-public class EnderPhantomEntity extends FlyingEntity {
+public class EnderPhantomEntity extends HostileEntity {
 
     public EnderPhantomEntity(EntityType<? extends EnderPhantomEntity> type, World world) {
         super(type, world);

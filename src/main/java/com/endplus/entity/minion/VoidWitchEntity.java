@@ -10,11 +10,10 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.thrown.SplashPotionEntity;
+import net.minecraft.component.type.PotionContentsComponent;
+import net.minecraft.entity.projectile.thrown.PotionEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.PotionContentsComponent;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -90,7 +89,8 @@ public class VoidWitchEntity extends HostileEntity {
         );
         potionStack.set(net.minecraft.component.DataComponentTypes.POTION_CONTENTS, contents);
 
-        SplashPotionEntity potion = new SplashPotionEntity(world, this, potionStack);
+        PotionEntity potion = new PotionEntity(world, this);
+        potion.setItem(potionStack);
         Vec3d toTarget = target.getPos().add(0, target.getHeight() / 2.0, 0)
                 .subtract(this.getX(), this.getEyeY(), this.getZ());
         potion.setVelocity(toTarget.x, toTarget.y + toTarget.horizontalLength() * 0.2, toTarget.z,
