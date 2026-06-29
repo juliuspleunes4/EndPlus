@@ -56,7 +56,7 @@ public abstract class DragonPhaseMixin extends MobEntity implements EnderDragonP
         endplus_fightStartTick = world.getTime();
     }
 
-    @Inject(method = "tick", at = @At("TAIL"))
+    @Inject(method = "tickMovement", at = @At("TAIL"))
     private void endplus_onTick(CallbackInfo ci) {
         if (!(this.getWorld() instanceof ServerWorld serverWorld)) return;
 
@@ -100,9 +100,9 @@ public abstract class DragonPhaseMixin extends MobEntity implements EnderDragonP
         }
     }
 
-    @Inject(method = "getXpToDrop", at = @At("HEAD"), cancellable = true)
-    private void endplus_overrideXp(CallbackInfoReturnable<Integer> cir) {
-        cir.setReturnValue(EndPlus.CONFIG.dragon.xpReward);
+    @Override
+    protected int getXpToDrop() {
+        return EndPlus.CONFIG.dragon.xpReward;
     }
 
     @Inject(method = "damage", at = @At("HEAD"))

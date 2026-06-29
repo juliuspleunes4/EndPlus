@@ -4,7 +4,7 @@
   "version": "${version}",
   "name": "End+",
   "description": "A comprehensive overhaul of the End dimension featuring an enhanced dragon fight, new biomes, structures, mobs, and gear.",
-  "authors": "Julius Pleunes",
+  "authors": ["Julius Pleunes"],
   "license": "MIT",
   "environment": "*",
   "entrypoints": {
