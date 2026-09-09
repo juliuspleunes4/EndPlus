@@ -18,7 +18,11 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.random.Random;
+import net.minecraft.world.Heightmap;
 import net.minecraft.world.World;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.boss.dragon.EnderDragonPart;
@@ -100,10 +104,12 @@ public abstract class DragonPhaseMixin extends MobEntity implements EnderDragonP
             endplus_waveTimer--;
         } else if (endplus_waveTimer == 0) {
             endplus_spawnWave(serverWorld);
-            int intervalTicks = (endplus_phase == DragonPhase.PHASE_2)
-                    ? EndPlus.CONFIG.dragon.minionWaveIntervalPhase2 * 20
-                    : EndPlus.CONFIG.dragon.minionWaveIntervalPhase3 * 20;
-            endplus_waveTimer = intervalTicks;
+            int intervalSeconds = switch (endplus_phase) {
+                case PHASE_2 -> EndPlus.CONFIG.dragon.minionWaveIntervalPhase2;
+                case PHASE_4 -> Math.max(5, EndPlus.CONFIG.dragon.minionWaveIntervalPhase3 / 2);
+                default -> EndPlus.CONFIG.dragon.minionWaveIntervalPhase3;
+            };
+            endplus_waveTimer = intervalSeconds * 20;
         }
     }
 
@@ -164,8 +170,8 @@ public abstract class DragonPhaseMixin extends MobEntity implements EnderDragonP
                 player.sendMessage(Text.literal(message), true);
             }
         }
-        if (newPhase == DragonPhase.PHASE_2 && endplus_waveTimer < 0) {
-            endplus_waveTimer = 5 * 20;
+        if (newPhase != DragonPhase.PHASE_1 && endplus_waveTimer < 0) {
+            endplus_waveTimer = 3 * 20;
         }
         if (newPhase == DragonPhase.PHASE_3) {
             endplus_activateShield(world);
@@ -297,21 +303,54 @@ public abstract class DragonPhaseMixin extends MobEntity implements EnderDragonP
 
     @Unique
     private void endplus_spawnMinions(ServerWorld world, EntityType<?> type, int count) {
-        for (int i = 0; i < count; i++) {
+        Random random = world.getRandom();
+        boolean flying = type == ModEntities.ENDER_PHANTOM || type == ModEntities.SHADOW_DRAKE;
+        List<ServerPlayerEntity> players = new ArrayList<>();
+        for (ServerPlayerEntity p : world.getPlayers()) {
+            if (p.isAlive() && !p.isSpectator() && p.squaredDistanceTo(0.0, p.getY(), 0.0) < 90000.0) {
+                players.add(p);
+            }
+        }
+
+        int spawned = 0;
+        int attempts = 0;
+        while (spawned < count && attempts < count * 8) {
+            attempts++;
             if (endplus_minionIds.size() >= EndPlus.CONFIG.minions.maxSimultaneousMinions) break;
-            double angle = world.getRandom().nextDouble() * Math.PI * 2;
-            double radius = 15.0 + world.getRandom().nextDouble() * 10.0;
-            double x = this.getX() + Math.cos(angle) * radius;
-            double y = this.getY() + 2.0;
-            double z = this.getZ() + Math.sin(angle) * radius;
+
+            double cx = 0.0, cz = 0.0;
+            if (!players.isEmpty()) {
+                ServerPlayerEntity anchor = players.get(random.nextInt(players.size()));
+                cx = anchor.getX();
+                cz = anchor.getZ();
+            }
+            double spawnAngle = random.nextDouble() * Math.PI * 2;
+            double dist = 8.0 + random.nextDouble() * 10.0;
+            int bx = MathHelper.floor(cx + Math.cos(spawnAngle) * dist);
+            int bz = MathHelper.floor(cz + Math.sin(spawnAngle) * dist);
+            BlockPos surface = world.getTopPosition(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, new BlockPos(bx, 0, bz));
+
+            double x = bx + 0.5;
+            double z = bz + 0.5;
+            double y;
+            if (flying) {
+                y = Math.max(surface.getY() + 10, this.getY() - 6);
+            } else {
+                if (surface.getY() <= world.getBottomY() + 1 || !world.getBlockState(surface.down()).isSolidBlock(world, surface.down())) {
+                    continue; // over the void — try another spot
+                }
+                y = surface.getY();
+            }
+
             Entity entity = type.create(world);
             if (entity == null) continue;
-            entity.refreshPositionAndAngles(x, y, z, world.getRandom().nextFloat() * 360, 0);
+            entity.refreshPositionAndAngles(x, y, z, random.nextFloat() * 360, 0);
             if (entity instanceof MobEntity mob) {
                 mob.initialize(world, world.getLocalDifficulty(mob.getBlockPos()), SpawnReason.MOB_SUMMONED, null);
             }
             world.spawnEntity(entity);
             endplus_minionIds.add(entity.getUuid());
+            spawned++;
         }
     }
 
