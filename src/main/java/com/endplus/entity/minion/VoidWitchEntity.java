@@ -1,6 +1,8 @@
 package com.endplus.entity.minion;
 
 import com.endplus.registry.ModEffects;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.PotionContentsComponent;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.*;
@@ -10,7 +12,6 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.component.type.PotionContentsComponent;
 import net.minecraft.entity.projectile.thrown.PotionEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -19,14 +20,17 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import java.util.List;
+import java.util.Optional;
 
 public class VoidWitchEntity extends HostileEntity {
 
-    private int endplus_healTimer = 0;
-    private int endplus_throwTimer = 0;
+    private int healTimer;
+    private int throwTimer;
+    private int blinkCooldown;
 
     public VoidWitchEntity(EntityType<? extends VoidWitchEntity> type, World world) {
         super(type, world);
+        this.experiencePoints = 6;
     }
 
     public static DefaultAttributeContainer.Builder createAttributes() {
@@ -39,31 +43,47 @@ public class VoidWitchEntity extends HostileEntity {
     @Override
     protected void initGoals() {
         this.goalSelector.add(0, new SwimGoal(this));
-        this.goalSelector.add(1, new FleeEntityGoal<>(this, PlayerEntity.class, 5.0f, 1.0, 1.2));
-        this.goalSelector.add(5, new WanderAroundFarGoal(this, 0.8));
-        this.goalSelector.add(6, new LookAtEntityGoal(this, PlayerEntity.class, 8.0f));
+        this.goalSelector.add(1, new FleeEntityGoal<>(this, PlayerEntity.class, 6.0f, 1.0, 1.3));
+        this.goalSelector.add(4, new WanderAroundFarGoal(this, 0.8));
+        this.goalSelector.add(6, new LookAtEntityGoal(this, PlayerEntity.class, 12.0f));
         this.goalSelector.add(7, new LookAroundGoal(this));
         this.targetSelector.add(1, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
-        this.targetSelector.add(2, new RevengeGoal(this));
+        this.targetSelector.add(2, new RevengeGoal(this).setGroupRevenge());
     }
 
     @Override
     public void tick() {
         super.tick();
-        if (this.getWorld() instanceof ServerWorld serverWorld) {
-            if (++endplus_healTimer >= 60) {
-                endplus_healTimer = 0;
-                endplus_healNearbyMinions(serverWorld);
-            }
-            LivingEntity target = this.getTarget();
-            if (target != null && ++endplus_throwTimer >= 40) {
-                endplus_throwTimer = 0;
-                endplus_throwPotion(serverWorld, target);
-            }
+        if (this.blinkCooldown > 0) {
+            this.blinkCooldown--;
+        }
+        if (!(this.getWorld() instanceof ServerWorld serverWorld)) {
+            return;
+        }
+
+        if (++this.healTimer >= 60) {
+            this.healTimer = 0;
+            this.healNearbyMinions(serverWorld);
+        }
+
+        LivingEntity target = this.getTarget();
+        if (target == null) {
+            return;
+        }
+
+        double distanceSq = this.squaredDistanceTo(target);
+        if (distanceSq < 25.0 && this.blinkCooldown == 0) {
+            this.blinkAwayFrom(target);
+            return;
+        }
+
+        if (distanceSq < 256.0 && this.getVisibilityCache().canSee(target) && ++this.throwTimer >= 70) {
+            this.throwTimer = 0;
+            this.throwPotion(serverWorld, target);
         }
     }
 
-    private void endplus_healNearbyMinions(ServerWorld world) {
+    private void healNearbyMinions(ServerWorld world) {
         List<HostileEntity> nearby = world.getEntitiesByClass(
                 HostileEntity.class, this.getBoundingBox().expand(10.0),
                 e -> e != this && (e instanceof VoidImpEntity || e instanceof EnderPhantomEntity
@@ -76,25 +96,41 @@ public class VoidWitchEntity extends HostileEntity {
         }
     }
 
-    private void endplus_throwPotion(ServerWorld world, LivingEntity target) {
+    private void blinkAwayFrom(LivingEntity threat) {
+        double dx = this.getX() - threat.getX();
+        double dz = this.getZ() - threat.getZ();
+        double length = Math.sqrt(dx * dx + dz * dz);
+        if (length < 1.0e-4) {
+            dx = this.getRandom().nextDouble() - 0.5;
+            dz = this.getRandom().nextDouble() - 0.5;
+            length = Math.sqrt(dx * dx + dz * dz);
+        }
+        double step = 8.0 + this.getRandom().nextDouble() * 4.0;
+        double x = this.getX() + dx / length * step;
+        double z = this.getZ() + dz / length * step;
+        if (this.teleport(x, this.getY(), z, true)) {
+            this.blinkCooldown = 60;
+        }
+    }
+
+    private void throwPotion(ServerWorld world, LivingEntity target) {
         ItemStack potionStack = new ItemStack(Items.SPLASH_POTION);
         PotionContentsComponent contents = new PotionContentsComponent(
-                java.util.Optional.empty(),
-                java.util.Optional.empty(),
+                Optional.empty(),
+                Optional.empty(),
                 List.of(
                         new StatusEffectInstance(StatusEffects.BLINDNESS, 100, 0),
                         new StatusEffectInstance(StatusEffects.WEAKNESS, 200, 0),
                         new StatusEffectInstance(ModEffects.VOID_ROT, 100, 0)
                 )
         );
-        potionStack.set(net.minecraft.component.DataComponentTypes.POTION_CONTENTS, contents);
+        potionStack.set(DataComponentTypes.POTION_CONTENTS, contents);
 
         PotionEntity potion = new PotionEntity(world, this);
         potion.setItem(potionStack);
         Vec3d toTarget = target.getPos().add(0, target.getHeight() / 2.0, 0)
                 .subtract(this.getX(), this.getEyeY(), this.getZ());
-        potion.setVelocity(toTarget.x, toTarget.y + toTarget.horizontalLength() * 0.2, toTarget.z,
-                0.75f, 8.0f);
+        potion.setVelocity(toTarget.x, toTarget.y + toTarget.horizontalLength() * 0.2, toTarget.z, 0.75f, 8.0f);
         world.spawnEntity(potion);
     }
 }
