@@ -6,6 +6,7 @@ import com.endplus.entity.dragon.EnderDragonPhaseData;
 import com.endplus.entity.minion.EndriteGolemEntity;
 import com.endplus.entity.projectile.VoidBeamEntity;
 import com.endplus.registry.ModEntities;
+import net.minecraft.advancement.AdvancementEntry;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
@@ -16,13 +17,16 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -45,7 +49,8 @@ public abstract class DragonPhaseMixin extends MobEntity implements EnderDragonP
     @Unique private long endplus_fightStartTick = -1L;
     @Unique private final Set<UUID> endplus_participants = new HashSet<>();
     @Unique private int endplus_waveTimer = -1;
-    @Unique private List<UUID> endplus_minionIds = new ArrayList<>();
+    @Unique private final List<UUID> endplus_minionIds = new ArrayList<>();
+    @Unique private int endplus_shieldBreakCount = 0;
 
     protected DragonPhaseMixin(EntityType<? extends MobEntity> entityType, World world) {
         super(entityType, world);
@@ -100,8 +105,11 @@ public abstract class DragonPhaseMixin extends MobEntity implements EnderDragonP
         }
     }
 
-    @Override
-    protected int getXpToDrop() {
+    @ModifyConstant(
+            method = "updatePostDeath",
+            constant = { @Constant(intValue = 500), @Constant(intValue = 12000) }
+    )
+    private int endplus_scaleDeathXp(int vanillaTotal) {
         return EndPlus.CONFIG.dragon.xpReward;
     }
 
@@ -178,9 +186,30 @@ public abstract class DragonPhaseMixin extends MobEntity implements EnderDragonP
             endplus_crystalIds[0] = null;
             endplus_crystalIds[1] = null;
             endplus_shieldReactivateTicks = 90 * 20;
+            endplus_shieldBreakCount++;
             for (ServerPlayerEntity player : world.getPlayers()) {
                 player.sendMessage(Text.literal("§aThe Void Shield has been broken!"), true);
             }
+            if (endplus_shieldBreakCount >= 2) {
+                for (UUID participantId : endplus_participants) {
+                    ServerPlayerEntity player = world.getServer().getPlayerManager().getPlayer(participantId);
+                    if (player != null) {
+                        endplus_grantAdvancement(world, player, "dragon/phase_breaker");
+                    }
+                }
+            }
+        }
+    }
+
+    @Unique
+    private void endplus_grantAdvancement(ServerWorld world, ServerPlayerEntity player, String path) {
+        AdvancementEntry advancement = world.getServer().getAdvancementLoader()
+                .get(Identifier.of(EndPlus.MOD_ID, path));
+        if (advancement == null) return;
+        var tracker = player.getAdvancementTracker();
+        var progress = tracker.getProgress(advancement);
+        for (String criterion : progress.getUnobtainedCriteria()) {
+            tracker.grantCriterion(advancement, criterion);
         }
     }
 
