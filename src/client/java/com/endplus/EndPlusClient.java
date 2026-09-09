@@ -9,6 +9,7 @@ import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.entity.FlyingItemEntityRenderer;
 
 public class EndPlusClient implements ClientModInitializer {
 
@@ -23,6 +24,8 @@ public class EndPlusClient implements ClientModInitializer {
         EntityModelLayerRegistry.registerModelLayer(EndriteGolemModel.LAYER_LOCATION, EndriteGolemModel::getTexturedModelData);
         EntityModelLayerRegistry.registerModelLayer(VoidWitchModel.LAYER_LOCATION, VoidWitchModel::getTexturedModelData);
         EntityModelLayerRegistry.registerModelLayer(ShadowDrakeModel.LAYER_LOCATION, ShadowDrakeModel::getTexturedModelData);
+
+        EntityRendererRegistry.register(ModEntities.VOID_BEAM, FlyingItemEntityRenderer::new);
 
         EntityRendererRegistry.register(ModEntities.VOID_IMP, VoidImpRenderer::new);
         EntityRendererRegistry.register(ModEntities.ENDER_PHANTOM, EnderPhantomRenderer::new);
