@@ -2,12 +2,14 @@ package com.endplus;
 
 import com.endplus.command.EndPlusCommand;
 import com.endplus.config.EndPlusConfig;
+import com.endplus.entity.minion.*;
 import com.endplus.registry.ModBlocks;
 import com.endplus.registry.ModCreativeTabs;
 import com.endplus.registry.ModEffects;
 import com.endplus.registry.ModEntities;
 import com.endplus.registry.ModItems;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
 import net.fabricmc.fabric.api.registry.FuelRegistry;
 import net.fabricmc.fabric.api.registry.StrippableBlockRegistry;
@@ -35,6 +37,12 @@ public class EndPlus implements ModInitializer {
         ModItems.initialize();
         ModCreativeTabs.initialize();
         EndPlusCommand.register();
+
+        FabricDefaultAttributeRegistry.register(ModEntities.VOID_IMP, VoidImpEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(ModEntities.ENDER_PHANTOM, EnderPhantomEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(ModEntities.ENDRITE_GOLEM, EndriteGolemEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(ModEntities.VOID_WITCH, VoidWitchEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(ModEntities.SHADOW_DRAKE, ShadowDrakeEntity.createAttributes());
 
         StrippableBlockRegistry.register(ModBlocks.UMBRAL_LOG, ModBlocks.STRIPPED_UMBRAL_LOG);
         StrippableBlockRegistry.register(ModBlocks.UMBRAL_WOOD, ModBlocks.STRIPPED_UMBRAL_WOOD);

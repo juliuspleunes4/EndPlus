@@ -2,11 +2,13 @@ package com.endplus.entity.projectile;
 
 import com.endplus.registry.ModEffects;
 import com.endplus.registry.ModEntities;
+import com.endplus.registry.ModItems;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.projectile.AbstractFireballEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.Vec3d;
@@ -45,5 +47,10 @@ public class VoidBeamEntity extends AbstractFireballEntity {
     @Override
     protected boolean isBurning() {
         return false;
+    }
+
+    @Override
+    public ItemStack getStack() {
+        return new ItemStack(ModItems.VOID_DUST);
     }
 }

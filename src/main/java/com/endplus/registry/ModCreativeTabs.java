@@ -56,6 +56,12 @@ public class ModCreativeTabs {
                         entries.add(ModItems.NAVIGATION_CRYSTAL);
                         entries.add(ModItems.CAMOUFLAGE_MEMBRANE);
                         entries.add(ModItems.PARASITE_FLUID);
+
+                        entries.add(ModItems.VOID_IMP_SPAWN_EGG);
+                        entries.add(ModItems.ENDER_PHANTOM_SPAWN_EGG);
+                        entries.add(ModItems.ENDRITE_GOLEM_SPAWN_EGG);
+                        entries.add(ModItems.VOID_WITCH_SPAWN_EGG);
+                        entries.add(ModItems.SHADOW_DRAKE_SPAWN_EGG);
                     })
                     .build()
     );

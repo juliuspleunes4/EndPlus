@@ -37,6 +37,13 @@ public class DragonFightMixin {
         serverWorld.spawnEntity(new ItemEntity(serverWorld, x, y, z, new ItemStack(ModItems.VOID_SCALE, scaleCount)));
 
         if (dragon instanceof EnderDragonPhaseData phaseData) {
+            for (UUID minionId : phaseData.endplus_getMinionIds()) {
+                net.minecraft.entity.Entity minion = serverWorld.getEntity(minionId);
+                if (minion != null && minion.isAlive()) {
+                    minion.discard();
+                }
+            }
+
             long fightDurationTicks = serverWorld.getTime() - phaseData.endplus_getFightStartTick();
             if (fightDurationTicks < 10L * 60 * 20) {
                 for (UUID participantId : phaseData.endplus_getParticipants()) {

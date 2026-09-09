@@ -4,6 +4,7 @@ import com.endplus.EndPlus;
 import net.minecraft.block.Block;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
+import net.minecraft.item.SpawnEggItem;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
@@ -46,6 +47,12 @@ public class ModItems {
     public static final Item CAMOUFLAGE_MEMBRANE = register("camouflage_membrane", new Item(new Item.Settings()));
     public static final Item PARASITE_FLUID = register("parasite_fluid", new Item(new Item.Settings()));
 
+    public static Item VOID_IMP_SPAWN_EGG;
+    public static Item ENDER_PHANTOM_SPAWN_EGG;
+    public static Item ENDRITE_GOLEM_SPAWN_EGG;
+    public static Item VOID_WITCH_SPAWN_EGG;
+    public static Item SHADOW_DRAKE_SPAWN_EGG;
+
     private static Item register(String name, Item item) {
         return Registry.register(Registries.ITEM, Identifier.of(EndPlus.MOD_ID, name), item);
     }
@@ -54,5 +61,16 @@ public class ModItems {
         return register(name, new BlockItem(block, new Item.Settings()));
     }
 
-    public static void initialize() {}
+    public static void initialize() {
+        VOID_IMP_SPAWN_EGG = register("void_imp_spawn_egg",
+                new SpawnEggItem(ModEntities.VOID_IMP, 0x1a0030, 0x7a00cc, new Item.Settings()));
+        ENDER_PHANTOM_SPAWN_EGG = register("ender_phantom_spawn_egg",
+                new SpawnEggItem(ModEntities.ENDER_PHANTOM, 0x0d0d2b, 0x3333cc, new Item.Settings()));
+        ENDRITE_GOLEM_SPAWN_EGG = register("endrite_golem_spawn_egg",
+                new SpawnEggItem(ModEntities.ENDRITE_GOLEM, 0x2d4a3e, 0x00e5cc, new Item.Settings()));
+        VOID_WITCH_SPAWN_EGG = register("void_witch_spawn_egg",
+                new SpawnEggItem(ModEntities.VOID_WITCH, 0x2d0059, 0xcc00ff, new Item.Settings()));
+        SHADOW_DRAKE_SPAWN_EGG = register("shadow_drake_spawn_egg",
+                new SpawnEggItem(ModEntities.SHADOW_DRAKE, 0x0d0d0d, 0x4d0099, new Item.Settings()));
+    }
 }

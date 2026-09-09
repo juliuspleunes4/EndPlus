@@ -3,8 +3,13 @@ package com.endplus.mixin.entity.dragon;
 import com.endplus.EndPlus;
 import com.endplus.entity.dragon.DragonPhase;
 import com.endplus.entity.dragon.EnderDragonPhaseData;
+import com.endplus.entity.minion.EndriteGolemEntity;
 import com.endplus.entity.projectile.VoidBeamEntity;
+import com.endplus.registry.ModEntities;
+import net.minecraft.advancement.AdvancementEntry;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.decoration.EndCrystalEntity;
 import net.minecraft.entity.mob.MobEntity;
@@ -12,18 +17,28 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.random.Random;
+import net.minecraft.world.Heightmap;
 import net.minecraft.world.World;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
+import net.minecraft.entity.boss.dragon.EnderDragonPart;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -35,9 +50,13 @@ public abstract class DragonPhaseMixin extends MobEntity implements EnderDragonP
     @Unique private int endplus_shieldReactivateTicks = 0;
     @Unique private final UUID[] endplus_crystalIds = new UUID[2];
     @Unique private int endplus_crystalCheckCooldown = 0;
+    @Unique private int endplus_crystalRegenTicks = 0;
     @Unique private int endplus_beamCooldown = 0;
     @Unique private long endplus_fightStartTick = -1L;
     @Unique private final Set<UUID> endplus_participants = new HashSet<>();
+    @Unique private int endplus_waveTimer = -1;
+    @Unique private final List<UUID> endplus_minionIds = new ArrayList<>();
+    @Unique private int endplus_shieldBreakCount = 0;
 
     protected DragonPhaseMixin(EntityType<? extends MobEntity> entityType, World world) {
         super(entityType, world);
@@ -48,7 +67,7 @@ public abstract class DragonPhaseMixin extends MobEntity implements EnderDragonP
         endplus_fightStartTick = world.getTime();
     }
 
-    @Inject(method = "tick", at = @At("TAIL"))
+    @Inject(method = "tickMovement", at = @At("TAIL"))
     private void endplus_onTick(CallbackInfo ci) {
         if (!(this.getWorld() instanceof ServerWorld serverWorld)) return;
 
@@ -80,26 +99,62 @@ public abstract class DragonPhaseMixin extends MobEntity implements EnderDragonP
                 endplus_beamCooldown = 200 + serverWorld.getRandom().nextInt(201);
             }
         }
+
+        if (endplus_waveTimer > 0) {
+            endplus_waveTimer--;
+        } else if (endplus_waveTimer == 0) {
+            endplus_spawnWave(serverWorld);
+            int intervalSeconds = switch (endplus_phase) {
+                case PHASE_2 -> EndPlus.CONFIG.dragon.minionWaveIntervalPhase2;
+                case PHASE_4 -> Math.max(5, EndPlus.CONFIG.dragon.minionWaveIntervalPhase3 / 2);
+                default -> EndPlus.CONFIG.dragon.minionWaveIntervalPhase3;
+            };
+            endplus_waveTimer = intervalSeconds * 20;
+        }
     }
 
-    @Inject(method = "getXpToDrop", at = @At("HEAD"), cancellable = true)
-    private void endplus_overrideXp(CallbackInfoReturnable<Integer> cir) {
-        cir.setReturnValue(EndPlus.CONFIG.dragon.xpReward);
+    @ModifyConstant(
+            method = "updatePostDeath",
+            constant = { @Constant(intValue = 500), @Constant(intValue = 12000) }
+    )
+    private int endplus_scaleDeathXp(int vanillaTotal) {
+        return EndPlus.CONFIG.dragon.xpReward;
     }
 
-    @Inject(method = "damage", at = @At("HEAD"))
-    private void endplus_trackParticipant(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
+    // Player attacks strike an EnderDragonPart, which routes to damagePart() and never through
+    // damage(); only damagePart() sees the real combat hits.
+    @Inject(method = "damagePart", at = @At("HEAD"))
+    private void endplus_trackParticipant(EnderDragonPart part, DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         if (source.getAttacker() instanceof ServerPlayerEntity player) {
             endplus_participants.add(player.getUuid());
         }
     }
 
-    @ModifyVariable(method = "damage", at = @At("HEAD"), argsOnly = true, ordinal = 0)
+    @ModifyVariable(method = "damagePart", at = @At("HEAD"), argsOnly = true, ordinal = 0)
     private float endplus_applyShieldReduction(float amount) {
+        float result = amount;
         if (endplus_shieldActive) {
-            return amount * (1.0f - (float) EndPlus.CONFIG.dragon.voidShieldReduction);
+            result *= (1.0f - (float) EndPlus.CONFIG.dragon.voidShieldReduction);
         }
-        return amount;
+        if (this.getWorld() instanceof ServerWorld serverWorld) {
+            EndriteGolemEntity golem = endplus_firstLiveGolem(serverWorld);
+            if (golem != null) {
+                float redirected = result * 0.2f;
+                result -= redirected;
+                golem.damage(serverWorld.getDamageSources().magic(), redirected);
+            }
+        }
+        return result;
+    }
+
+    @Unique
+    private EndriteGolemEntity endplus_firstLiveGolem(ServerWorld world) {
+        for (UUID id : endplus_minionIds) {
+            if (world.getEntity(id) instanceof EndriteGolemEntity golem && golem.isAlive()) {
+                return golem;
+            }
+        }
+        return null;
     }
 
     @Unique
@@ -115,6 +170,9 @@ public abstract class DragonPhaseMixin extends MobEntity implements EnderDragonP
                 player.sendMessage(Text.literal(message), true);
             }
         }
+        if (newPhase != DragonPhase.PHASE_1 && endplus_waveTimer < 0) {
+            endplus_waveTimer = 3 * 20;
+        }
         if (newPhase == DragonPhase.PHASE_3) {
             endplus_activateShield(world);
         }
@@ -123,35 +181,80 @@ public abstract class DragonPhaseMixin extends MobEntity implements EnderDragonP
     @Unique
     private void endplus_activateShield(ServerWorld world) {
         endplus_shieldActive = true;
-
-        EndCrystalEntity crystal1 = new EndCrystalEntity(world, 20.0, 70.0, 0.0);
-        crystal1.setBeamTarget(null);
-        world.spawnEntity(crystal1);
-        endplus_crystalIds[0] = crystal1.getUuid();
-
-        EndCrystalEntity crystal2 = new EndCrystalEntity(world, -20.0, 70.0, 0.0);
-        crystal2.setBeamTarget(null);
-        world.spawnEntity(crystal2);
-        endplus_crystalIds[1] = crystal2.getUuid();
+        endplus_crystalRegenTicks = 0;
+        endplus_spawnCrystal(world, 0);
+        endplus_spawnCrystal(world, 1);
 
         for (ServerPlayerEntity player : world.getPlayers()) {
-            player.sendMessage(Text.literal("§5Two Void Crystals appear — destroy them to break the shield!"), true);
+            player.sendMessage(Text.literal("§5Two Void Crystals appear — destroy them together to break the shield!"), true);
         }
     }
 
     @Unique
-    private void endplus_checkVoidCrystals(ServerWorld world) {
-        boolean c1Dead = endplus_crystalIds[0] == null || world.getEntity(endplus_crystalIds[0]) == null;
-        boolean c2Dead = endplus_crystalIds[1] == null || world.getEntity(endplus_crystalIds[1]) == null;
+    private void endplus_spawnCrystal(ServerWorld world, int slot) {
+        double x = slot == 0 ? 20.0 : -20.0;
+        EndCrystalEntity crystal = new EndCrystalEntity(world, x, 70.0, 0.0);
+        crystal.setBeamTarget(null);
+        world.spawnEntity(crystal);
+        endplus_crystalIds[slot] = crystal.getUuid();
+    }
 
-        if (c1Dead && c2Dead) {
+    @Unique
+    private void endplus_checkVoidCrystals(ServerWorld world) {
+        boolean c0Dead = endplus_crystalIds[0] == null || world.getEntity(endplus_crystalIds[0]) == null;
+        boolean c1Dead = endplus_crystalIds[1] == null || world.getEntity(endplus_crystalIds[1]) == null;
+
+        if (c0Dead && c1Dead) {
             endplus_shieldActive = false;
             endplus_crystalIds[0] = null;
             endplus_crystalIds[1] = null;
+            endplus_crystalRegenTicks = 0;
             endplus_shieldReactivateTicks = 90 * 20;
+            endplus_shieldBreakCount++;
             for (ServerPlayerEntity player : world.getPlayers()) {
                 player.sendMessage(Text.literal("§aThe Void Shield has been broken!"), true);
             }
+            if (endplus_shieldBreakCount >= 2) {
+                for (UUID participantId : endplus_participants) {
+                    ServerPlayerEntity player = world.getServer().getPlayerManager().getPlayer(participantId);
+                    if (player != null) {
+                        endplus_grantAdvancement(world, player, "dragon/phase_breaker");
+                    }
+                }
+            }
+            return;
+        }
+
+        if (c0Dead != c1Dead) {
+            // one crystal down: it reforms after 90s unless the other is also destroyed first
+            if (endplus_crystalRegenTicks <= 0) {
+                endplus_crystalRegenTicks = 90 * 20;
+                for (ServerPlayerEntity player : world.getPlayers()) {
+                    player.sendMessage(Text.literal("§5A Void Crystal begins to reform..."), true);
+                }
+            } else {
+                endplus_crystalRegenTicks -= 20;
+                if (endplus_crystalRegenTicks <= 0) {
+                    endplus_spawnCrystal(world, c0Dead ? 0 : 1);
+                    for (ServerPlayerEntity player : world.getPlayers()) {
+                        player.sendMessage(Text.literal("§5The Void Crystal has reformed."), true);
+                    }
+                }
+            }
+        } else {
+            endplus_crystalRegenTicks = 0;
+        }
+    }
+
+    @Unique
+    private void endplus_grantAdvancement(ServerWorld world, ServerPlayerEntity player, String path) {
+        AdvancementEntry advancement = world.getServer().getAdvancementLoader()
+                .get(Identifier.of(EndPlus.MOD_ID, path));
+        if (advancement == null) return;
+        var tracker = player.getAdvancementTracker();
+        var progress = tracker.getProgress(advancement);
+        for (String criterion : progress.getUnobtainedCriteria()) {
+            tracker.grantCriterion(advancement, criterion);
         }
     }
 
@@ -167,6 +270,88 @@ public abstract class DragonPhaseMixin extends MobEntity implements EnderDragonP
         VoidBeamEntity beam = new VoidBeamEntity(world, (EnderDragonEntity)(Object)this, velocity.x, velocity.y, velocity.z);
         beam.setPosition(origin.x, origin.y, origin.z);
         world.spawnEntity(beam);
+    }
+
+    @Unique
+    private void endplus_spawnWave(ServerWorld world) {
+        endplus_minionIds.removeIf(id -> world.getEntity(id) == null);
+
+        if (EndPlus.CONFIG.minions.enableVoidImp) {
+            int count = 4 + world.getRandom().nextInt(5);
+            endplus_spawnMinions(world, ModEntities.VOID_IMP, count);
+        }
+        if (EndPlus.CONFIG.minions.enableEnderPhantom) {
+            int count = 2 + world.getRandom().nextInt(2);
+            endplus_spawnMinions(world, ModEntities.ENDER_PHANTOM, count);
+        }
+        if (endplus_phase.ordinal() >= DragonPhase.PHASE_3.ordinal()) {
+            if (EndPlus.CONFIG.minions.enableEndriteGolem) {
+                long alive = endplus_minionIds.stream()
+                        .filter(id -> world.getEntity(id) instanceof EndriteGolemEntity)
+                        .count();
+                if (alive < 2) endplus_spawnMinions(world, ModEntities.ENDRITE_GOLEM, 1);
+            }
+            if (EndPlus.CONFIG.minions.enableVoidWitch) {
+                endplus_spawnMinions(world, ModEntities.VOID_WITCH, 1);
+            }
+        }
+        if (endplus_phase == DragonPhase.PHASE_4 && EndPlus.CONFIG.minions.enableShadowDrake) {
+            int count = 1 + world.getRandom().nextInt(2);
+            endplus_spawnMinions(world, ModEntities.SHADOW_DRAKE, count);
+        }
+    }
+
+    @Unique
+    private void endplus_spawnMinions(ServerWorld world, EntityType<?> type, int count) {
+        Random random = world.getRandom();
+        boolean flying = type == ModEntities.ENDER_PHANTOM || type == ModEntities.SHADOW_DRAKE;
+        List<ServerPlayerEntity> players = new ArrayList<>();
+        for (ServerPlayerEntity p : world.getPlayers()) {
+            if (p.isAlive() && !p.isSpectator() && p.squaredDistanceTo(0.0, p.getY(), 0.0) < 90000.0) {
+                players.add(p);
+            }
+        }
+
+        int spawned = 0;
+        int attempts = 0;
+        while (spawned < count && attempts < count * 8) {
+            attempts++;
+            if (endplus_minionIds.size() >= EndPlus.CONFIG.minions.maxSimultaneousMinions) break;
+
+            double cx = 0.0, cz = 0.0;
+            if (!players.isEmpty()) {
+                ServerPlayerEntity anchor = players.get(random.nextInt(players.size()));
+                cx = anchor.getX();
+                cz = anchor.getZ();
+            }
+            double spawnAngle = random.nextDouble() * Math.PI * 2;
+            double dist = 8.0 + random.nextDouble() * 10.0;
+            int bx = MathHelper.floor(cx + Math.cos(spawnAngle) * dist);
+            int bz = MathHelper.floor(cz + Math.sin(spawnAngle) * dist);
+            BlockPos surface = world.getTopPosition(Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, new BlockPos(bx, 0, bz));
+
+            double x = bx + 0.5;
+            double z = bz + 0.5;
+            double y;
+            if (flying) {
+                y = Math.max(surface.getY() + 10, this.getY() - 6);
+            } else {
+                if (surface.getY() <= world.getBottomY() + 1 || !world.getBlockState(surface.down()).isSolidBlock(world, surface.down())) {
+                    continue; // over the void — try another spot
+                }
+                y = surface.getY();
+            }
+
+            Entity entity = type.create(world);
+            if (entity == null) continue;
+            entity.refreshPositionAndAngles(x, y, z, random.nextFloat() * 360, 0);
+            if (entity instanceof MobEntity mob) {
+                mob.initialize(world, world.getLocalDifficulty(mob.getBlockPos()), SpawnReason.MOB_SUMMONED, null);
+            }
+            world.spawnEntity(entity);
+            endplus_minionIds.add(entity.getUuid());
+            spawned++;
+        }
     }
 
     @Override
@@ -197,5 +382,11 @@ public abstract class DragonPhaseMixin extends MobEntity implements EnderDragonP
     @Unique
     public Set<UUID> endplus_getParticipants() {
         return endplus_participants;
+    }
+
+    @Override
+    @Unique
+    public List<UUID> endplus_getMinionIds() {
+        return endplus_minionIds;
     }
 }
