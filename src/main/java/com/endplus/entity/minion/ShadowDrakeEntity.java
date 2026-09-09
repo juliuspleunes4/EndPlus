@@ -1,5 +1,6 @@
 package com.endplus.entity.minion;
 
+import com.endplus.entity.ai.CrystalPerchHealGoal;
 import com.endplus.entity.ai.DestroyRespawnBlocksGoal;
 import com.endplus.entity.ai.FlyingCircleGoal;
 import com.endplus.entity.ai.FlyingMoveControl;
@@ -39,8 +40,9 @@ public class ShadowDrakeEntity extends HostileEntity {
     @Override
     protected void initGoals() {
         this.goalSelector.add(1, new FlyingSwoopGoal(this, 70));
-        this.goalSelector.add(2, new DestroyRespawnBlocksGoal(this, 10.0));
-        this.goalSelector.add(3, new FlyingCircleGoal(this));
+        this.goalSelector.add(2, new CrystalPerchHealGoal(this));
+        this.goalSelector.add(3, new DestroyRespawnBlocksGoal(this, 10.0));
+        this.goalSelector.add(4, new FlyingCircleGoal(this));
         this.goalSelector.add(8, new LookAtEntityGoal(this, PlayerEntity.class, 8.0f));
         this.targetSelector.add(1, new RevengeGoal(this).setGroupRevenge());
         this.targetSelector.add(2, new ActiveTargetGoal<>(this, PlayerEntity.class, true));

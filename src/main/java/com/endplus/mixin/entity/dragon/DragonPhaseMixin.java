@@ -21,6 +21,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
+import net.minecraft.entity.boss.dragon.EnderDragonPart;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -45,6 +46,7 @@ public abstract class DragonPhaseMixin extends MobEntity implements EnderDragonP
     @Unique private int endplus_shieldReactivateTicks = 0;
     @Unique private final UUID[] endplus_crystalIds = new UUID[2];
     @Unique private int endplus_crystalCheckCooldown = 0;
+    @Unique private int endplus_crystalRegenTicks = 0;
     @Unique private int endplus_beamCooldown = 0;
     @Unique private long endplus_fightStartTick = -1L;
     @Unique private final Set<UUID> endplus_participants = new HashSet<>();
@@ -113,27 +115,40 @@ public abstract class DragonPhaseMixin extends MobEntity implements EnderDragonP
         return EndPlus.CONFIG.dragon.xpReward;
     }
 
-    @Inject(method = "damage", at = @At("HEAD"))
-    private void endplus_trackParticipant(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
+    // Player attacks strike an EnderDragonPart, which routes to damagePart() and never through
+    // damage(); only damagePart() sees the real combat hits.
+    @Inject(method = "damagePart", at = @At("HEAD"))
+    private void endplus_trackParticipant(EnderDragonPart part, DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         if (source.getAttacker() instanceof ServerPlayerEntity player) {
             endplus_participants.add(player.getUuid());
         }
     }
 
-    @ModifyVariable(method = "damage", at = @At("HEAD"), argsOnly = true, ordinal = 0)
+    @ModifyVariable(method = "damagePart", at = @At("HEAD"), argsOnly = true, ordinal = 0)
     private float endplus_applyShieldReduction(float amount) {
-        float reduction = 0f;
+        float result = amount;
         if (endplus_shieldActive) {
-            reduction += (float) EndPlus.CONFIG.dragon.voidShieldReduction;
+            result *= (1.0f - (float) EndPlus.CONFIG.dragon.voidShieldReduction);
         }
         if (this.getWorld() instanceof ServerWorld serverWorld) {
-            boolean hasGolem = endplus_minionIds.stream().anyMatch(id -> {
-                Entity e = serverWorld.getEntity(id);
-                return e instanceof EndriteGolemEntity && e.isAlive();
-            });
-            if (hasGolem) reduction += 0.2f;
+            EndriteGolemEntity golem = endplus_firstLiveGolem(serverWorld);
+            if (golem != null) {
+                float redirected = result * 0.2f;
+                result -= redirected;
+                golem.damage(serverWorld.getDamageSources().magic(), redirected);
+            }
         }
-        return amount * (1.0f - Math.min(reduction, 0.9f));
+        return result;
+    }
+
+    @Unique
+    private EndriteGolemEntity endplus_firstLiveGolem(ServerWorld world) {
+        for (UUID id : endplus_minionIds) {
+            if (world.getEntity(id) instanceof EndriteGolemEntity golem && golem.isAlive()) {
+                return golem;
+            }
+        }
+        return null;
     }
 
     @Unique
@@ -160,31 +175,34 @@ public abstract class DragonPhaseMixin extends MobEntity implements EnderDragonP
     @Unique
     private void endplus_activateShield(ServerWorld world) {
         endplus_shieldActive = true;
-
-        EndCrystalEntity crystal1 = new EndCrystalEntity(world, 20.0, 70.0, 0.0);
-        crystal1.setBeamTarget(null);
-        world.spawnEntity(crystal1);
-        endplus_crystalIds[0] = crystal1.getUuid();
-
-        EndCrystalEntity crystal2 = new EndCrystalEntity(world, -20.0, 70.0, 0.0);
-        crystal2.setBeamTarget(null);
-        world.spawnEntity(crystal2);
-        endplus_crystalIds[1] = crystal2.getUuid();
+        endplus_crystalRegenTicks = 0;
+        endplus_spawnCrystal(world, 0);
+        endplus_spawnCrystal(world, 1);
 
         for (ServerPlayerEntity player : world.getPlayers()) {
-            player.sendMessage(Text.literal("§5Two Void Crystals appear — destroy them to break the shield!"), true);
+            player.sendMessage(Text.literal("§5Two Void Crystals appear — destroy them together to break the shield!"), true);
         }
     }
 
     @Unique
-    private void endplus_checkVoidCrystals(ServerWorld world) {
-        boolean c1Dead = endplus_crystalIds[0] == null || world.getEntity(endplus_crystalIds[0]) == null;
-        boolean c2Dead = endplus_crystalIds[1] == null || world.getEntity(endplus_crystalIds[1]) == null;
+    private void endplus_spawnCrystal(ServerWorld world, int slot) {
+        double x = slot == 0 ? 20.0 : -20.0;
+        EndCrystalEntity crystal = new EndCrystalEntity(world, x, 70.0, 0.0);
+        crystal.setBeamTarget(null);
+        world.spawnEntity(crystal);
+        endplus_crystalIds[slot] = crystal.getUuid();
+    }
 
-        if (c1Dead && c2Dead) {
+    @Unique
+    private void endplus_checkVoidCrystals(ServerWorld world) {
+        boolean c0Dead = endplus_crystalIds[0] == null || world.getEntity(endplus_crystalIds[0]) == null;
+        boolean c1Dead = endplus_crystalIds[1] == null || world.getEntity(endplus_crystalIds[1]) == null;
+
+        if (c0Dead && c1Dead) {
             endplus_shieldActive = false;
             endplus_crystalIds[0] = null;
             endplus_crystalIds[1] = null;
+            endplus_crystalRegenTicks = 0;
             endplus_shieldReactivateTicks = 90 * 20;
             endplus_shieldBreakCount++;
             for (ServerPlayerEntity player : world.getPlayers()) {
@@ -198,6 +216,27 @@ public abstract class DragonPhaseMixin extends MobEntity implements EnderDragonP
                     }
                 }
             }
+            return;
+        }
+
+        if (c0Dead != c1Dead) {
+            // one crystal down: it reforms after 90s unless the other is also destroyed first
+            if (endplus_crystalRegenTicks <= 0) {
+                endplus_crystalRegenTicks = 90 * 20;
+                for (ServerPlayerEntity player : world.getPlayers()) {
+                    player.sendMessage(Text.literal("§5A Void Crystal begins to reform..."), true);
+                }
+            } else {
+                endplus_crystalRegenTicks -= 20;
+                if (endplus_crystalRegenTicks <= 0) {
+                    endplus_spawnCrystal(world, c0Dead ? 0 : 1);
+                    for (ServerPlayerEntity player : world.getPlayers()) {
+                        player.sendMessage(Text.literal("§5The Void Crystal has reformed."), true);
+                    }
+                }
+            }
+        } else {
+            endplus_crystalRegenTicks = 0;
         }
     }
 
