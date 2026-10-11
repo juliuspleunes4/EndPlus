@@ -62,6 +62,7 @@ public class ModCreativeTabs {
                         entries.add(ModItems.ENDRITE_GOLEM_SPAWN_EGG);
                         entries.add(ModItems.VOID_WITCH_SPAWN_EGG);
                         entries.add(ModItems.SHADOW_DRAKE_SPAWN_EGG);
+                        entries.add(ModItems.VOID_STALKER_SPAWN_EGG);
                     })
                     .build()
     );

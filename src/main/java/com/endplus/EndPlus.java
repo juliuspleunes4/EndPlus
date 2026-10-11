@@ -3,6 +3,7 @@ package com.endplus;
 import com.endplus.command.EndPlusCommand;
 import com.endplus.config.EndPlusConfig;
 import com.endplus.entity.minion.*;
+import com.endplus.entity.mob.VoidStalkerEntity;
 import com.endplus.registry.ModBlocks;
 import com.endplus.registry.ModCreativeTabs;
 import com.endplus.registry.ModEffects;
@@ -14,6 +15,10 @@ import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
 import net.fabricmc.fabric.api.registry.FuelRegistry;
 import net.fabricmc.fabric.api.registry.StrippableBlockRegistry;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.entity.SpawnLocationTypes;
+import net.minecraft.entity.SpawnRestriction;
+import net.minecraft.entity.mob.HostileEntity;
+import net.minecraft.world.Heightmap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,6 +48,9 @@ public class EndPlus implements ModInitializer {
         FabricDefaultAttributeRegistry.register(ModEntities.ENDRITE_GOLEM, EndriteGolemEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(ModEntities.VOID_WITCH, VoidWitchEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(ModEntities.SHADOW_DRAKE, ShadowDrakeEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(ModEntities.VOID_STALKER, VoidStalkerEntity.createAttributes());
+        SpawnRestriction.register(ModEntities.VOID_STALKER, SpawnLocationTypes.ON_GROUND,
+                Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, HostileEntity::canSpawnIgnoreLightLevel);
 
         StrippableBlockRegistry.register(ModBlocks.UMBRAL_LOG, ModBlocks.STRIPPED_UMBRAL_LOG);
         StrippableBlockRegistry.register(ModBlocks.UMBRAL_WOOD, ModBlocks.STRIPPED_UMBRAL_WOOD);

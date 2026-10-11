@@ -2,6 +2,7 @@ package com.endplus.registry;
 
 import com.endplus.EndPlus;
 import com.endplus.entity.minion.*;
+import com.endplus.entity.mob.VoidStalkerEntity;
 import com.endplus.entity.projectile.VoidBeamEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
@@ -18,6 +19,8 @@ public class ModEntities {
     public static EntityType<EndriteGolemEntity> ENDRITE_GOLEM;
     public static EntityType<VoidWitchEntity> VOID_WITCH;
     public static EntityType<ShadowDrakeEntity> SHADOW_DRAKE;
+
+    public static EntityType<VoidStalkerEntity> VOID_STALKER;
 
     public static void initialize() {
         VOID_BEAM = Registry.register(
@@ -72,6 +75,15 @@ public class ModEntities {
                 EntityType.Builder.<ShadowDrakeEntity>create(ShadowDrakeEntity::new, SpawnGroup.MONSTER)
                         .dimensions(1.0f, 0.8f)
                         .maxTrackingRange(10)
+                        .build()
+        );
+
+        VOID_STALKER = Registry.register(
+                Registries.ENTITY_TYPE,
+                Identifier.of(EndPlus.MOD_ID, "void_stalker"),
+                EntityType.Builder.<VoidStalkerEntity>create(VoidStalkerEntity::new, SpawnGroup.MONSTER)
+                        .dimensions(0.9f, 0.9f)
+                        .maxTrackingRange(8)
                         .build()
         );
     }

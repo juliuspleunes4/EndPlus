@@ -52,6 +52,7 @@ public class ModItems {
     public static Item ENDRITE_GOLEM_SPAWN_EGG;
     public static Item VOID_WITCH_SPAWN_EGG;
     public static Item SHADOW_DRAKE_SPAWN_EGG;
+    public static Item VOID_STALKER_SPAWN_EGG;
 
     private static Item register(String name, Item item) {
         return Registry.register(Registries.ITEM, Identifier.of(EndPlus.MOD_ID, name), item);
@@ -72,5 +73,7 @@ public class ModItems {
                 new SpawnEggItem(ModEntities.VOID_WITCH, 0x2d0059, 0xcc00ff, new Item.Settings()));
         SHADOW_DRAKE_SPAWN_EGG = register("shadow_drake_spawn_egg",
                 new SpawnEggItem(ModEntities.SHADOW_DRAKE, 0x0d0d0d, 0x4d0099, new Item.Settings()));
+        VOID_STALKER_SPAWN_EGG = register("void_stalker_spawn_egg",
+                new SpawnEggItem(ModEntities.VOID_STALKER, 0xd8d9a0, 0x9a00ff, new Item.Settings()));
     }
 }
