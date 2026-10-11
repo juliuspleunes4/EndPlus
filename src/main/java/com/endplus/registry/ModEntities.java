@@ -82,7 +82,7 @@ public class ModEntities {
                 Registries.ENTITY_TYPE,
                 Identifier.of(EndPlus.MOD_ID, "void_stalker"),
                 EntityType.Builder.<VoidStalkerEntity>create(VoidStalkerEntity::new, SpawnGroup.MONSTER)
-                        .dimensions(0.9f, 0.9f)
+                        .dimensions(0.6f, 2.3f)
                         .maxTrackingRange(8)
                         .build()
         );

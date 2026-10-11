@@ -19,6 +19,7 @@ import net.minecraft.predicate.entity.EntityPredicates;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
@@ -27,7 +28,7 @@ import java.util.List;
 
 /**
  * Pack-hunting ambusher of the Void Wastes (PLANNING 6.1). While motionless and unprovoked it
- * camouflages as End Stone (the client skips rendering it unless the viewer is within
+ * camouflages (the client renders it as a faint, shimmering silhouette unless the viewer is within
  * {@link #REVEAL_RANGE} blocks); it leaps at players for burst damage and alerts nearby Stalkers
  * whenever it attacks or is hurt.
  */
@@ -36,6 +37,7 @@ public class VoidStalkerEntity extends HostileEntity {
     public static final double REVEAL_RANGE = 8.0;
     private static final double AMBUSH_RANGE = 12.0;
     private static final double PACK_ALERT_RANGE = 16.0;
+    private static final float CAMOUFLAGE_FADE_STEP = 0.04f;
     private static final int STILL_TICKS_TO_CAMOUFLAGE = 40;
     private static final int REVEAL_TICKS_ON_HIT = 100;
     private static final int LEAP_COOLDOWN = 60;
@@ -49,6 +51,8 @@ public class VoidStalkerEntity extends HostileEntity {
     private int revealTicks;
     private int leapTicks;
     private int leapCooldown;
+    private float camouflageProgress;
+    private float prevCamouflageProgress;
 
     public VoidStalkerEntity(EntityType<? extends VoidStalkerEntity> type, World world) {
         super(type, world);
@@ -86,10 +90,18 @@ public class VoidStalkerEntity extends HostileEntity {
         return this.dataTracker.get(CAMOUFLAGED);
     }
 
+    /** Client-side fade 0 (fully visible) .. 1 (fully camouflaged), so the cloak eases in and out. */
+    public float getCamouflageProgress(float tickDelta) {
+        return MathHelper.lerp(tickDelta, this.prevCamouflageProgress, this.camouflageProgress);
+    }
+
     @Override
     public void tick() {
         super.tick();
         if (this.getWorld().isClient()) {
+            this.prevCamouflageProgress = this.camouflageProgress;
+            float goal = this.isCamouflaged() ? 1.0f : 0.0f;
+            this.camouflageProgress += MathHelper.clamp(goal - this.camouflageProgress, -CAMOUFLAGE_FADE_STEP, CAMOUFLAGE_FADE_STEP);
             return;
         }
         if (this.revealTicks > 0) {
