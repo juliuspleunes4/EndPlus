@@ -34,5 +34,7 @@ public class EndPlusClient implements ClientModInitializer {
         EntityRendererRegistry.register(ModEntities.VOID_WITCH, VoidWitchRenderer::new);
         EntityRendererRegistry.register(ModEntities.SHADOW_DRAKE, ShadowDrakeRenderer::new);
         EntityRendererRegistry.register(ModEntities.VOID_STALKER, VoidStalkerRenderer::new);
+        EntityRendererRegistry.register(ModEntities.PRISM_CRAWLER, PrismCrawlerRenderer::new);
+        EntityRendererRegistry.register(ModEntities.CRYSTAL_SHARD, FlyingItemEntityRenderer::new);
     }
 }

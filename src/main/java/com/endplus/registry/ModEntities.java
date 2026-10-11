@@ -2,7 +2,9 @@ package com.endplus.registry;
 
 import com.endplus.EndPlus;
 import com.endplus.entity.minion.*;
+import com.endplus.entity.mob.PrismCrawlerEntity;
 import com.endplus.entity.mob.VoidStalkerEntity;
+import com.endplus.entity.projectile.CrystalShardEntity;
 import com.endplus.entity.projectile.VoidBeamEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
@@ -21,6 +23,8 @@ public class ModEntities {
     public static EntityType<ShadowDrakeEntity> SHADOW_DRAKE;
 
     public static EntityType<VoidStalkerEntity> VOID_STALKER;
+    public static EntityType<PrismCrawlerEntity> PRISM_CRAWLER;
+    public static EntityType<CrystalShardEntity> CRYSTAL_SHARD;
 
     public static void initialize() {
         VOID_BEAM = Registry.register(
@@ -84,6 +88,25 @@ public class ModEntities {
                 EntityType.Builder.<VoidStalkerEntity>create(VoidStalkerEntity::new, SpawnGroup.MONSTER)
                         .dimensions(0.6f, 2.3f)
                         .maxTrackingRange(8)
+                        .build()
+        );
+
+        PRISM_CRAWLER = Registry.register(
+                Registries.ENTITY_TYPE,
+                Identifier.of(EndPlus.MOD_ID, "prism_crawler"),
+                EntityType.Builder.<PrismCrawlerEntity>create(PrismCrawlerEntity::new, SpawnGroup.MONSTER)
+                        .dimensions(1.4f, 0.9f)
+                        .maxTrackingRange(8)
+                        .build()
+        );
+
+        CRYSTAL_SHARD = Registry.register(
+                Registries.ENTITY_TYPE,
+                Identifier.of(EndPlus.MOD_ID, "crystal_shard"),
+                EntityType.Builder.<CrystalShardEntity>create(CrystalShardEntity::new, SpawnGroup.MISC)
+                        .dimensions(0.25f, 0.25f)
+                        .maxTrackingRange(4)
+                        .trackingTickInterval(10)
                         .build()
         );
     }
