@@ -4,7 +4,6 @@ import com.endplus.client.model.VoidStalkerModel;
 import com.endplus.entity.mob.VoidStalkerEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.MobEntityRenderer;
@@ -67,7 +66,7 @@ public class VoidStalkerRenderer extends MobEntityRenderer<VoidStalkerEntity, Vo
         // Only the body fades; feature layers (the glow) keep drawing at full strength.
         RenderLayer body = RenderLayer.getEntityTranslucent(TEXTURE);
         super.render(entity, yaw, tickDelta, matrices,
-                layer -> layer == body ? new AlphaConsumer(vertexConsumers.getBuffer(layer), alpha) : vertexConsumers.getBuffer(layer),
+                layer -> layer == body ? new AlphaVertexConsumer(vertexConsumers.getBuffer(layer), alpha) : vertexConsumers.getBuffer(layer),
                 light);
     }
 
@@ -77,52 +76,5 @@ public class VoidStalkerRenderer extends MobEntityRenderer<VoidStalkerEntity, Vo
             return RenderLayer.getEntityTranslucent(this.getTexture(entity));
         }
         return super.getRenderLayer(entity, showBody, translucent, showOutline);
-    }
-
-    /** Forwards everything to the real consumer but scales the alpha of each vertex colour. */
-    private static final class AlphaConsumer implements VertexConsumer {
-        private final VertexConsumer delegate;
-        private final float alpha;
-
-        AlphaConsumer(VertexConsumer delegate, float alpha) {
-            this.delegate = delegate;
-            this.alpha = alpha;
-        }
-
-        @Override
-        public VertexConsumer vertex(float x, float y, float z) {
-            this.delegate.vertex(x, y, z);
-            return this;
-        }
-
-        @Override
-        public VertexConsumer color(int red, int green, int blue, int alpha) {
-            this.delegate.color(red, green, blue, (int) (alpha * this.alpha));
-            return this;
-        }
-
-        @Override
-        public VertexConsumer texture(float u, float v) {
-            this.delegate.texture(u, v);
-            return this;
-        }
-
-        @Override
-        public VertexConsumer overlay(int u, int v) {
-            this.delegate.overlay(u, v);
-            return this;
-        }
-
-        @Override
-        public VertexConsumer light(int u, int v) {
-            this.delegate.light(u, v);
-            return this;
-        }
-
-        @Override
-        public VertexConsumer normal(float x, float y, float z) {
-            this.delegate.normal(x, y, z);
-            return this;
-        }
     }
 }

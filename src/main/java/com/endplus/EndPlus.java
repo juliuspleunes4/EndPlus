@@ -4,6 +4,7 @@ import com.endplus.command.EndPlusCommand;
 import com.endplus.config.EndPlusConfig;
 import com.endplus.entity.minion.*;
 import com.endplus.entity.mob.PrismCrawlerEntity;
+import com.endplus.entity.mob.ShadeLurkerEntity;
 import com.endplus.entity.mob.VoidStalkerEntity;
 import com.endplus.registry.ModBlocks;
 import com.endplus.registry.ModCreativeTabs;
@@ -50,6 +51,9 @@ public class EndPlus implements ModInitializer {
         FabricDefaultAttributeRegistry.register(ModEntities.VOID_WITCH, VoidWitchEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(ModEntities.SHADOW_DRAKE, ShadowDrakeEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(ModEntities.VOID_STALKER, VoidStalkerEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(ModEntities.SHADE_LURKER, ShadeLurkerEntity.createAttributes());
+        SpawnRestriction.register(ModEntities.SHADE_LURKER, SpawnLocationTypes.ON_GROUND,
+                Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, HostileEntity::canSpawnIgnoreLightLevel);
         FabricDefaultAttributeRegistry.register(ModEntities.PRISM_CRAWLER, PrismCrawlerEntity.createAttributes());
         SpawnRestriction.register(ModEntities.PRISM_CRAWLER, SpawnLocationTypes.ON_GROUND,
                 Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, HostileEntity::canSpawnIgnoreLightLevel);
