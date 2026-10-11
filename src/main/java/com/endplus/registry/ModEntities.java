@@ -2,6 +2,7 @@ package com.endplus.registry;
 
 import com.endplus.EndPlus;
 import com.endplus.entity.minion.*;
+import com.endplus.entity.mob.CliffWraithEntity;
 import com.endplus.entity.mob.PrismCrawlerEntity;
 import com.endplus.entity.mob.ShadeLurkerEntity;
 import com.endplus.entity.mob.VoidStalkerEntity;
@@ -27,6 +28,7 @@ public class ModEntities {
     public static EntityType<PrismCrawlerEntity> PRISM_CRAWLER;
     public static EntityType<CrystalShardEntity> CRYSTAL_SHARD;
     public static EntityType<ShadeLurkerEntity> SHADE_LURKER;
+    public static EntityType<CliffWraithEntity> CLIFF_WRAITH;
 
     public static void initialize() {
         VOID_BEAM = Registry.register(
@@ -108,6 +110,15 @@ public class ModEntities {
                 EntityType.Builder.<ShadeLurkerEntity>create(ShadeLurkerEntity::new, SpawnGroup.MONSTER)
                         .dimensions(1.0f, 1.7f)
                         .maxTrackingRange(8)
+                        .build()
+        );
+
+        CLIFF_WRAITH = Registry.register(
+                Registries.ENTITY_TYPE,
+                Identifier.of(EndPlus.MOD_ID, "cliff_wraith"),
+                EntityType.Builder.<CliffWraithEntity>create(CliffWraithEntity::new, SpawnGroup.MONSTER)
+                        .dimensions(1.0f, 0.7f)
+                        .maxTrackingRange(10)
                         .build()
         );
 

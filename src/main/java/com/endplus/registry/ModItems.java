@@ -55,6 +55,7 @@ public class ModItems {
     public static Item VOID_STALKER_SPAWN_EGG;
     public static Item PRISM_CRAWLER_SPAWN_EGG;
     public static Item SHADE_LURKER_SPAWN_EGG;
+    public static Item CLIFF_WRAITH_SPAWN_EGG;
 
     private static Item register(String name, Item item) {
         return Registry.register(Registries.ITEM, Identifier.of(EndPlus.MOD_ID, name), item);
@@ -81,5 +82,7 @@ public class ModItems {
                 new SpawnEggItem(ModEntities.PRISM_CRAWLER, 0xb48cf0, 0x5a2d9c, new Item.Settings()));
         SHADE_LURKER_SPAWN_EGG = register("shade_lurker_spawn_egg",
                 new SpawnEggItem(ModEntities.SHADE_LURKER, 0x12141f, 0x96ffcd, new Item.Settings()));
+        CLIFF_WRAITH_SPAWN_EGG = register("cliff_wraith_spawn_egg",
+                new SpawnEggItem(ModEntities.CLIFF_WRAITH, 0x7a8296, 0x78e6ff, new Item.Settings()));
     }
 }

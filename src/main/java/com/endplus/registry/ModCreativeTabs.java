@@ -65,6 +65,7 @@ public class ModCreativeTabs {
                         entries.add(ModItems.VOID_STALKER_SPAWN_EGG);
                         entries.add(ModItems.PRISM_CRAWLER_SPAWN_EGG);
                         entries.add(ModItems.SHADE_LURKER_SPAWN_EGG);
+                        entries.add(ModItems.CLIFF_WRAITH_SPAWN_EGG);
                     })
                     .build()
     );
