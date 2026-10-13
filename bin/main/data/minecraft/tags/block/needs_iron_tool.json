@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "endplus:void_ore",
+    "endplus:void_stone",
+    "endplus:void_stone_bricks"
+  ]
+}

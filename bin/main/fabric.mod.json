@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "endplus",
+  "version": "${version}",
+  "name": "End+",
+  "description": "A comprehensive overhaul of the End dimension featuring an enhanced dragon fight, new biomes, structures, mobs, and gear.",
+  "authors": ["Julius Pleunes"],
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.endplus.EndPlus"
+    ],
+    "client": [
+      "com.endplus.EndPlusClient"
+    ]
+  },
+  "mixins": [
+    "endplus.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.16.5",
+    "fabric-api": "*",
+    "minecraft": "~1.21.1",
+    "java": ">=21"
+  }
+}

@@ -46,6 +46,7 @@
   "entity.endplus.prism_crawler": "Prism Crawler",
   "entity.endplus.shade_lurker": "Shade Lurker",
   "entity.endplus.cliff_wraith": "Cliff Wraith",
+  "entity.endplus.ancient_end_golem": "Ancient End Golem",
   "entity.endplus.crystal_shard": "Crystal Shard",
 
   "item.endplus.void_imp_spawn_egg": "Void Imp Spawn Egg",
@@ -57,6 +58,7 @@
   "item.endplus.prism_crawler_spawn_egg": "Prism Crawler Spawn Egg",
   "item.endplus.shade_lurker_spawn_egg": "Shade Lurker Spawn Egg",
   "item.endplus.cliff_wraith_spawn_egg": "Cliff Wraith Spawn Egg",
+  "item.endplus.ancient_end_golem_spawn_egg": "Ancient End Golem Spawn Egg",
 
   "effect.endplus.void_rot": "Void Rot",
 

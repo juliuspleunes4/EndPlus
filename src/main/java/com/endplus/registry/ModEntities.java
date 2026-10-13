@@ -2,6 +2,7 @@ package com.endplus.registry;
 
 import com.endplus.EndPlus;
 import com.endplus.entity.minion.*;
+import com.endplus.entity.mob.AncientEndGolemEntity;
 import com.endplus.entity.mob.CliffWraithEntity;
 import com.endplus.entity.mob.PrismCrawlerEntity;
 import com.endplus.entity.mob.ShadeLurkerEntity;
@@ -29,6 +30,7 @@ public class ModEntities {
     public static EntityType<CrystalShardEntity> CRYSTAL_SHARD;
     public static EntityType<ShadeLurkerEntity> SHADE_LURKER;
     public static EntityType<CliffWraithEntity> CLIFF_WRAITH;
+    public static EntityType<AncientEndGolemEntity> ANCIENT_END_GOLEM;
 
     public static void initialize() {
         VOID_BEAM = Registry.register(
@@ -118,6 +120,15 @@ public class ModEntities {
                 Identifier.of(EndPlus.MOD_ID, "cliff_wraith"),
                 EntityType.Builder.<CliffWraithEntity>create(CliffWraithEntity::new, SpawnGroup.MONSTER)
                         .dimensions(1.0f, 0.7f)
+                        .maxTrackingRange(10)
+                        .build()
+        );
+
+        ANCIENT_END_GOLEM = Registry.register(
+                Registries.ENTITY_TYPE,
+                Identifier.of(EndPlus.MOD_ID, "ancient_end_golem"),
+                EntityType.Builder.<AncientEndGolemEntity>create(AncientEndGolemEntity::new, SpawnGroup.MONSTER)
+                        .dimensions(1.6f, 3.2f)
                         .maxTrackingRange(10)
                         .build()
         );

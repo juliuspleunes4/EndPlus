@@ -1,0 +1,22 @@
+{
+  "parent": "endplus:root",
+  "display": {
+    "icon": { "id": "endplus:endrite_shard" },
+    "title": { "translate": "advancement.endplus.items.endrite_miner.title" },
+    "description": { "translate": "advancement.endplus.items.endrite_miner.description" },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "has_endrite_shard": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          { "items": ["endplus:endrite_shard"] }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "##",
+    "##"
+  ],
+  "key": {
+    "#": { "item": "endplus:crystal_shard" }
+  },
+  "result": { "id": "endplus:crystal_glass", "count": 4 }
+}

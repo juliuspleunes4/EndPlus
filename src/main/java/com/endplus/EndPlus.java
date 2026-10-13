@@ -3,6 +3,7 @@ package com.endplus;
 import com.endplus.command.EndPlusCommand;
 import com.endplus.config.EndPlusConfig;
 import com.endplus.entity.minion.*;
+import com.endplus.entity.mob.AncientEndGolemEntity;
 import com.endplus.entity.mob.CliffWraithEntity;
 import com.endplus.entity.mob.PrismCrawlerEntity;
 import com.endplus.entity.mob.ShadeLurkerEntity;
@@ -52,6 +53,9 @@ public class EndPlus implements ModInitializer {
         FabricDefaultAttributeRegistry.register(ModEntities.VOID_WITCH, VoidWitchEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(ModEntities.SHADOW_DRAKE, ShadowDrakeEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(ModEntities.VOID_STALKER, VoidStalkerEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(ModEntities.ANCIENT_END_GOLEM, AncientEndGolemEntity.createAttributes());
+        SpawnRestriction.register(ModEntities.ANCIENT_END_GOLEM, SpawnLocationTypes.ON_GROUND,
+                Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, HostileEntity::canSpawnIgnoreLightLevel);
         FabricDefaultAttributeRegistry.register(ModEntities.CLIFF_WRAITH, CliffWraithEntity.createAttributes());
         SpawnRestriction.register(ModEntities.CLIFF_WRAITH, SpawnLocationTypes.UNRESTRICTED,
                 Heightmap.Type.MOTION_BLOCKING, HostileEntity::canSpawnIgnoreLightLevel);

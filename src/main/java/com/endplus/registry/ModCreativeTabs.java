@@ -66,6 +66,7 @@ public class ModCreativeTabs {
                         entries.add(ModItems.PRISM_CRAWLER_SPAWN_EGG);
                         entries.add(ModItems.SHADE_LURKER_SPAWN_EGG);
                         entries.add(ModItems.CLIFF_WRAITH_SPAWN_EGG);
+                        entries.add(ModItems.ANCIENT_END_GOLEM_SPAWN_EGG);
                     })
                     .build()
     );

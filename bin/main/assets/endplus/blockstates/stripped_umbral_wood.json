@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "axis=x": { "model": "endplus:block/stripped_umbral_wood", "x": 90, "y": 90 },
+    "axis=y": { "model": "endplus:block/stripped_umbral_wood" },
+    "axis=z": { "model": "endplus:block/stripped_umbral_wood", "x": 90 }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "parent": "endplus:dragon/dragonslayer",
+  "display": {
+    "icon": { "id": "endplus:dragon_heart" },
+    "title": { "translate": "advancement.endplus.items.dragon_heart_obtained.title" },
+    "description": { "translate": "advancement.endplus.items.dragon_heart_obtained.description" },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "has_dragon_heart": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          { "items": ["endplus:dragon_heart"] }
+        ]
+      }
+    }
+  }
+}

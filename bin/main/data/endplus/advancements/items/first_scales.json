@@ -1,0 +1,22 @@
+{
+  "parent": "endplus:dragon/dragonslayer",
+  "display": {
+    "icon": { "id": "endplus:void_scale" },
+    "title": { "translate": "advancement.endplus.items.first_scales.title" },
+    "description": { "translate": "advancement.endplus.items.first_scales.description" },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "has_void_scale": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          { "items": ["endplus:void_scale"] }
+        ]
+      }
+    }
+  }
+}
