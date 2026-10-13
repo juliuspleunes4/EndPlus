@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "axis=x": { "model": "endplus:block/stripped_umbral_log_horizontal", "x": 90, "y": 90 },
+    "axis=y": { "model": "endplus:block/stripped_umbral_log" },
+    "axis=z": { "model": "endplus:block/stripped_umbral_log_horizontal", "x": 90 }
+  }
+}

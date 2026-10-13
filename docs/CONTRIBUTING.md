@@ -208,6 +208,12 @@ Mixins that target classes present on both sides (most entity/world classes) go 
 
 ---
 
+## Licensing of Contributions
+
+End+ is source-available under the [End+ Source-Available License](../LICENSE.md). You keep the copyright on what you write, and by submitting a pull request you grant the author the rights described in section 3 of that license. Only submit work that is yours to submit. Do not copy code or assets from other projects unless their license allows it and you say so in the pull request.
+
+---
+
 ## Submitting a Pull Request
 
 1. **Branch from `main`** — use a descriptive branch name: `feature/void-stalker-mob`, `fix/shield-damage-reduction`, etc.

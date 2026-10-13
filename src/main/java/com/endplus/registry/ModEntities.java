@@ -2,6 +2,13 @@ package com.endplus.registry;
 
 import com.endplus.EndPlus;
 import com.endplus.entity.minion.*;
+import com.endplus.entity.mob.AncientEndGolemEntity;
+import com.endplus.entity.mob.CliffWraithEntity;
+import com.endplus.entity.mob.EnderParasiteEntity;
+import com.endplus.entity.mob.PrismCrawlerEntity;
+import com.endplus.entity.mob.ShadeLurkerEntity;
+import com.endplus.entity.mob.VoidStalkerEntity;
+import com.endplus.entity.projectile.CrystalShardEntity;
 import com.endplus.entity.projectile.VoidBeamEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
@@ -18,6 +25,14 @@ public class ModEntities {
     public static EntityType<EndriteGolemEntity> ENDRITE_GOLEM;
     public static EntityType<VoidWitchEntity> VOID_WITCH;
     public static EntityType<ShadowDrakeEntity> SHADOW_DRAKE;
+
+    public static EntityType<VoidStalkerEntity> VOID_STALKER;
+    public static EntityType<PrismCrawlerEntity> PRISM_CRAWLER;
+    public static EntityType<CrystalShardEntity> CRYSTAL_SHARD;
+    public static EntityType<ShadeLurkerEntity> SHADE_LURKER;
+    public static EntityType<CliffWraithEntity> CLIFF_WRAITH;
+    public static EntityType<AncientEndGolemEntity> ANCIENT_END_GOLEM;
+    public static EntityType<EnderParasiteEntity> ENDER_PARASITE;
 
     public static void initialize() {
         VOID_BEAM = Registry.register(
@@ -72,6 +87,70 @@ public class ModEntities {
                 EntityType.Builder.<ShadowDrakeEntity>create(ShadowDrakeEntity::new, SpawnGroup.MONSTER)
                         .dimensions(1.0f, 0.8f)
                         .maxTrackingRange(10)
+                        .build()
+        );
+
+        VOID_STALKER = Registry.register(
+                Registries.ENTITY_TYPE,
+                Identifier.of(EndPlus.MOD_ID, "void_stalker"),
+                EntityType.Builder.<VoidStalkerEntity>create(VoidStalkerEntity::new, SpawnGroup.MONSTER)
+                        .dimensions(0.6f, 2.3f)
+                        .maxTrackingRange(8)
+                        .build()
+        );
+
+        PRISM_CRAWLER = Registry.register(
+                Registries.ENTITY_TYPE,
+                Identifier.of(EndPlus.MOD_ID, "prism_crawler"),
+                EntityType.Builder.<PrismCrawlerEntity>create(PrismCrawlerEntity::new, SpawnGroup.MONSTER)
+                        .dimensions(1.4f, 0.9f)
+                        .maxTrackingRange(8)
+                        .build()
+        );
+
+        SHADE_LURKER = Registry.register(
+                Registries.ENTITY_TYPE,
+                Identifier.of(EndPlus.MOD_ID, "shade_lurker"),
+                EntityType.Builder.<ShadeLurkerEntity>create(ShadeLurkerEntity::new, SpawnGroup.MONSTER)
+                        .dimensions(1.0f, 1.7f)
+                        .maxTrackingRange(8)
+                        .build()
+        );
+
+        CLIFF_WRAITH = Registry.register(
+                Registries.ENTITY_TYPE,
+                Identifier.of(EndPlus.MOD_ID, "cliff_wraith"),
+                EntityType.Builder.<CliffWraithEntity>create(CliffWraithEntity::new, SpawnGroup.MONSTER)
+                        .dimensions(1.0f, 0.7f)
+                        .maxTrackingRange(10)
+                        .build()
+        );
+
+        ANCIENT_END_GOLEM = Registry.register(
+                Registries.ENTITY_TYPE,
+                Identifier.of(EndPlus.MOD_ID, "ancient_end_golem"),
+                EntityType.Builder.<AncientEndGolemEntity>create(AncientEndGolemEntity::new, SpawnGroup.MONSTER)
+                        .dimensions(1.6f, 3.2f)
+                        .maxTrackingRange(10)
+                        .build()
+        );
+
+        ENDER_PARASITE = Registry.register(
+                Registries.ENTITY_TYPE,
+                Identifier.of(EndPlus.MOD_ID, "ender_parasite"),
+                EntityType.Builder.<EnderParasiteEntity>create(EnderParasiteEntity::new, SpawnGroup.MONSTER)
+                        .dimensions(0.6f, 0.4f)
+                        .maxTrackingRange(8)
+                        .build()
+        );
+
+        CRYSTAL_SHARD = Registry.register(
+                Registries.ENTITY_TYPE,
+                Identifier.of(EndPlus.MOD_ID, "crystal_shard"),
+                EntityType.Builder.<CrystalShardEntity>create(CrystalShardEntity::new, SpawnGroup.MISC)
+                        .dimensions(0.25f, 0.25f)
+                        .maxTrackingRange(4)
+                        .trackingTickInterval(10)
                         .build()
         );
     }

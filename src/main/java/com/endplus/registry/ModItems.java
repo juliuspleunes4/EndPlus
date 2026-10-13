@@ -52,6 +52,12 @@ public class ModItems {
     public static Item ENDRITE_GOLEM_SPAWN_EGG;
     public static Item VOID_WITCH_SPAWN_EGG;
     public static Item SHADOW_DRAKE_SPAWN_EGG;
+    public static Item VOID_STALKER_SPAWN_EGG;
+    public static Item PRISM_CRAWLER_SPAWN_EGG;
+    public static Item SHADE_LURKER_SPAWN_EGG;
+    public static Item CLIFF_WRAITH_SPAWN_EGG;
+    public static Item ANCIENT_END_GOLEM_SPAWN_EGG;
+    public static Item ENDER_PARASITE_SPAWN_EGG;
 
     private static Item register(String name, Item item) {
         return Registry.register(Registries.ITEM, Identifier.of(EndPlus.MOD_ID, name), item);
@@ -72,5 +78,17 @@ public class ModItems {
                 new SpawnEggItem(ModEntities.VOID_WITCH, 0x2d0059, 0xcc00ff, new Item.Settings()));
         SHADOW_DRAKE_SPAWN_EGG = register("shadow_drake_spawn_egg",
                 new SpawnEggItem(ModEntities.SHADOW_DRAKE, 0x0d0d0d, 0x4d0099, new Item.Settings()));
+        VOID_STALKER_SPAWN_EGG = register("void_stalker_spawn_egg",
+                new SpawnEggItem(ModEntities.VOID_STALKER, 0xd8d9a0, 0x9a00ff, new Item.Settings()));
+        PRISM_CRAWLER_SPAWN_EGG = register("prism_crawler_spawn_egg",
+                new SpawnEggItem(ModEntities.PRISM_CRAWLER, 0xb48cf0, 0x5a2d9c, new Item.Settings()));
+        SHADE_LURKER_SPAWN_EGG = register("shade_lurker_spawn_egg",
+                new SpawnEggItem(ModEntities.SHADE_LURKER, 0x12141f, 0x96ffcd, new Item.Settings()));
+        CLIFF_WRAITH_SPAWN_EGG = register("cliff_wraith_spawn_egg",
+                new SpawnEggItem(ModEntities.CLIFF_WRAITH, 0x7a8296, 0x78e6ff, new Item.Settings()));
+        ANCIENT_END_GOLEM_SPAWN_EGG = register("ancient_end_golem_spawn_egg",
+                new SpawnEggItem(ModEntities.ANCIENT_END_GOLEM, 0x544e68, 0xffd678, new Item.Settings()));
+        ENDER_PARASITE_SPAWN_EGG = register("ender_parasite_spawn_egg",
+                new SpawnEggItem(ModEntities.ENDER_PARASITE, 0x1e162e, 0xe44cd0, new Item.Settings()));
     }
 }

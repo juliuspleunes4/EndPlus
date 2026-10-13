@@ -1,0 +1,58 @@
+{
+  "parent": "endplus:exploration/void_wastes",
+  "display": {
+    "icon": { "id": "endplus:navigation_crystal" },
+    "title": { "translate": "advancement.endplus.exploration.biome_walker.title" },
+    "description": { "translate": "advancement.endplus.exploration.biome_walker.description" },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "void_wastes": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "location": { "biome": "endplus:void_wastes" }
+      }
+    },
+    "crystalline_fields": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "location": { "biome": "endplus:crystalline_fields" }
+      }
+    },
+    "umbral_forest": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "location": { "biome": "endplus:umbral_forest" }
+      }
+    },
+    "skyreach_peaks": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "location": { "biome": "endplus:skyreach_peaks" }
+      }
+    },
+    "sunken_citadel": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "location": { "biome": "endplus:sunken_citadel" }
+      }
+    },
+    "nether_scar": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "location": { "biome": "endplus:nether_scar" }
+      }
+    }
+  },
+  "requirements": [
+    ["void_wastes"],
+    ["crystalline_fields"],
+    ["umbral_forest"],
+    ["skyreach_peaks"],
+    ["sunken_citadel"],
+    ["nether_scar"]
+  ]
+}

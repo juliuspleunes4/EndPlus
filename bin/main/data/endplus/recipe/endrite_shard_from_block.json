@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    { "item": "endplus:endrite_block" }
+  ],
+  "result": { "id": "endplus:endrite_shard", "count": 9 }
+}

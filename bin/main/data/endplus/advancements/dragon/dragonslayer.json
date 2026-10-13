@@ -1,0 +1,22 @@
+{
+  "parent": "endplus:root",
+  "display": {
+    "icon": { "id": "endplus:void_scale" },
+    "title": { "translate": "advancement.endplus.dragon.dragonslayer.title" },
+    "description": { "translate": "advancement.endplus.dragon.dragonslayer.description" },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "kill_dragon": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "minecraft:ender_dragon"
+        }
+      }
+    }
+  }
+}

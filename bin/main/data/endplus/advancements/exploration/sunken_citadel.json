@@ -1,0 +1,22 @@
+{
+  "parent": "endplus:root",
+  "display": {
+    "icon": { "id": "endplus:void_stone_bricks" },
+    "title": { "translate": "advancement.endplus.exploration.sunken_citadel.title" },
+    "description": { "translate": "advancement.endplus.exploration.sunken_citadel.description" },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "enter_biome": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "location": {
+          "biome": "endplus:sunken_citadel"
+        }
+      }
+    }
+  }
+}

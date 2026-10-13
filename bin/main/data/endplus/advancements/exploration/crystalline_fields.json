@@ -1,0 +1,22 @@
+{
+  "parent": "endplus:root",
+  "display": {
+    "icon": { "id": "endplus:crystal_spire" },
+    "title": { "translate": "advancement.endplus.exploration.crystalline_fields.title" },
+    "description": { "translate": "advancement.endplus.exploration.crystalline_fields.description" },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "enter_biome": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "location": {
+          "biome": "endplus:crystalline_fields"
+        }
+      }
+    }
+  }
+}

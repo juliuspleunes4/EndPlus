@@ -5,7 +5,7 @@
   "name": "End+",
   "description": "A comprehensive overhaul of the End dimension featuring an enhanced dragon fight, new biomes, structures, mobs, and gear.",
   "authors": ["Julius Pleunes"],
-  "license": "MIT",
+  "license": "LicenseRef-EndPlus",
   "environment": "*",
   "entrypoints": {
     "main": [

@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "endplus:void_stone",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": { "type": "minecraft:uniform", "min": 2, "max": 4 }
+            },
+            { "function": "minecraft:enchanted_count_increase", "enchantment": "minecraft:looting", "count": 1 }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        { "type": "minecraft:item", "name": "endplus:ancient_rune_fragment", "weight": 50 },
+        { "type": "minecraft:empty", "weight": 50 }
+      ]
+    }
+  ]
+}

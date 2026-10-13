@@ -1,0 +1,15 @@
+{
+  "replace": false,
+  "values": [
+    "endplus:cracked_end_stone",
+    "endplus:void_touched_purpur",
+    "endplus:endrite_ore",
+    "endplus:void_ore",
+    "endplus:endrite_block",
+    "endplus:void_stone",
+    "endplus:void_stone_bricks",
+    "endplus:crystal_glass",
+    "endplus:void_lamp",
+    "endplus:void_rune_block"
+  ]
+}
