@@ -36,6 +36,10 @@
   "item.endplus.navigation_crystal": "Navigation Crystal",
   "item.endplus.camouflage_membrane": "Camouflage Membrane",
   "item.endplus.parasite_fluid": "Parasite Fluid",
+  "item.minecraft.potion.effect.resistance": "Potion of Resistance",
+  "item.minecraft.splash_potion.effect.resistance": "Splash Potion of Resistance",
+  "item.minecraft.lingering_potion.effect.resistance": "Lingering Potion of Resistance",
+  "item.minecraft.tipped_arrow.effect.resistance": "Arrow of Resistance",
 
   "entity.endplus.void_imp": "Void Imp",
   "entity.endplus.ender_phantom": "Ender Phantom",

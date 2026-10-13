@@ -3,6 +3,8 @@ package com.endplus.registry;
 import com.endplus.EndPlus;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.minecraft.item.ItemGroup;
+import net.minecraft.component.type.PotionContentsComponent;
+import net.minecraft.item.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -56,6 +58,9 @@ public class ModCreativeTabs {
                         entries.add(ModItems.NAVIGATION_CRYSTAL);
                         entries.add(ModItems.CAMOUFLAGE_MEMBRANE);
                         entries.add(ModItems.PARASITE_FLUID);
+                        entries.add(PotionContentsComponent.createStack(Items.POTION, ModPotions.RESISTANCE));
+                        entries.add(PotionContentsComponent.createStack(Items.POTION, ModPotions.LONG_RESISTANCE));
+                        entries.add(PotionContentsComponent.createStack(Items.POTION, ModPotions.STRONG_RESISTANCE));
 
                         entries.add(ModItems.VOID_IMP_SPAWN_EGG);
                         entries.add(ModItems.ENDER_PHANTOM_SPAWN_EGG);

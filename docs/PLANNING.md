@@ -693,13 +693,15 @@ Located at `config/endplus.json` (server-side config, loaded on startup):
 4. Cliff Wraith (knockback + item drop AI)
 5. Ancient End Golem (patrol AI + AoE)
 6. Ender Parasite (latch mechanic)
-7. Spawn rules per biome
+
+*Per-biome spawn rules were moved to the end of Phase E, because they need the biomes to exist.*
 
 ### Phase E — World Generation (Week 9–11)
 1. Register 6 new End biomes
 2. Biome-specific features (geysers, crystal spires, Umbral Trees, wind updrafts, void pools)
 3. Biome surface/noise configuration
 4. Integration with Fabric's biome API for outer End injection
+5. Spawn rules per biome for the Phase D mobs (moved here from Phase D), including Cliff Wraiths spawning in pairs
 
 ### Phase F — Structures (Week 12–14)
 1. Void Spire (NBT structure + generation)

@@ -117,8 +117,8 @@ Summoned in waves during the fight. They vanish when the dragon dies.
 | **A** | Foundation: blocks, items, loot, recipes, config | ✅ Done |
 | **B** | Dragon overhaul: 500 HP, phases, Void Shield, Void Beam | ✅ Done |
 | **C** | Dragon minions: five mobs and wave summoning | ✅ Done |
-| **D** | New mobs: all six built, natural spawning waits on the new biomes | 🔨 In progress |
-| **E** | World generation: six new End biomes | ⏳ Planned |
+| **D** | New mobs: all six built | ✅ Done |
+| **E** | World generation: six new End biomes, plus natural spawning for the new mobs | ⏳ Planned |
 | **F** | Structures, including The Citadel | ⏳ Planned |
 | **G** | Weapons, armor sets, and utility items | ⏳ Planned |
 | **H** | Enchantments | ⏳ Planned |
