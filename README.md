@@ -106,7 +106,7 @@ Summoned in waves during the fight. They vanish when the dragon dies.
 | **Shade Lurker** | 55 | Umbral Forest | Near-invisible in the dark, stalks you, strikes once, then pulls back. Walks through Umbral wood |
 | **Cliff Wraith** | 40 | Skyreach Peaks | A skeletal flyer with a huge wingspan that hurls you back and can knock the item from your hand |
 | **Ancient End Golem** | 150 | Sunken Citadel | A slow stone guardian that patrols its post and slams the ground in a Void Slam |
-| **Ender Parasite** | 10 | Outer biomes | *Coming soon* |
+| **Ender Parasite** | 10 | Outer biomes | Hangs from ceilings, drops onto passers-by, and drains you until you sprint it off |
 
 ---
 
@@ -117,7 +117,7 @@ Summoned in waves during the fight. They vanish when the dragon dies.
 | **A** | Foundation: blocks, items, loot, recipes, config | ✅ Done |
 | **B** | Dragon overhaul: 500 HP, phases, Void Shield, Void Beam | ✅ Done |
 | **C** | Dragon minions: five mobs and wave summoning | ✅ Done |
-| **D** | New mobs: five of six built, the Ender Parasite and biome spawning remain | 🔨 In progress |
+| **D** | New mobs: all six built, natural spawning waits on the new biomes | 🔨 In progress |
 | **E** | World generation: six new End biomes | ⏳ Planned |
 | **F** | Structures, including The Citadel | ⏳ Planned |
 | **G** | Weapons, armor sets, and utility items | ⏳ Planned |

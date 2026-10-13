@@ -28,6 +28,7 @@ public class EndPlusClient implements ClientModInitializer {
         EntityModelLayerRegistry.registerModelLayer(ShadeLurkerModel.LAYER_LOCATION, ShadeLurkerModel::getTexturedModelData);
         EntityModelLayerRegistry.registerModelLayer(CliffWraithModel.LAYER_LOCATION, CliffWraithModel::getTexturedModelData);
         EntityModelLayerRegistry.registerModelLayer(AncientEndGolemModel.LAYER_LOCATION, AncientEndGolemModel::getTexturedModelData);
+        EntityModelLayerRegistry.registerModelLayer(EnderParasiteModel.LAYER_LOCATION, EnderParasiteModel::getTexturedModelData);
 
         EntityRendererRegistry.register(ModEntities.VOID_BEAM, FlyingItemEntityRenderer::new);
 
@@ -41,6 +42,7 @@ public class EndPlusClient implements ClientModInitializer {
         EntityRendererRegistry.register(ModEntities.SHADE_LURKER, ShadeLurkerRenderer::new);
         EntityRendererRegistry.register(ModEntities.CLIFF_WRAITH, CliffWraithRenderer::new);
         EntityRendererRegistry.register(ModEntities.ANCIENT_END_GOLEM, AncientEndGolemRenderer::new);
+        EntityRendererRegistry.register(ModEntities.ENDER_PARASITE, EnderParasiteRenderer::new);
         EntityRendererRegistry.register(ModEntities.CRYSTAL_SHARD, FlyingItemEntityRenderer::new);
     }
 }

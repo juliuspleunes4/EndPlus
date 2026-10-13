@@ -57,6 +57,7 @@ public class ModItems {
     public static Item SHADE_LURKER_SPAWN_EGG;
     public static Item CLIFF_WRAITH_SPAWN_EGG;
     public static Item ANCIENT_END_GOLEM_SPAWN_EGG;
+    public static Item ENDER_PARASITE_SPAWN_EGG;
 
     private static Item register(String name, Item item) {
         return Registry.register(Registries.ITEM, Identifier.of(EndPlus.MOD_ID, name), item);
@@ -87,5 +88,7 @@ public class ModItems {
                 new SpawnEggItem(ModEntities.CLIFF_WRAITH, 0x7a8296, 0x78e6ff, new Item.Settings()));
         ANCIENT_END_GOLEM_SPAWN_EGG = register("ancient_end_golem_spawn_egg",
                 new SpawnEggItem(ModEntities.ANCIENT_END_GOLEM, 0x544e68, 0xffd678, new Item.Settings()));
+        ENDER_PARASITE_SPAWN_EGG = register("ender_parasite_spawn_egg",
+                new SpawnEggItem(ModEntities.ENDER_PARASITE, 0x1e162e, 0xe44cd0, new Item.Settings()));
     }
 }
